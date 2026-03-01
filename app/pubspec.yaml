@@ -1,0 +1,57 @@
+name: itqan
+description: Quran pronunciation and memorization app
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Audio
+  just_audio: ^0.9.36
+  record: ^5.0.4
+
+  # HTTP
+  dio: ^5.4.0
+
+  # Local storage
+  hive_flutter: ^1.1.0
+
+  # State management
+  flutter_riverpod: ^2.4.9
+
+  # Fonts
+  google_fonts: ^6.1.0
+
+  # UI utilities
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
+
+  # Path
+  path_provider: ^2.1.2
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/data/
+
+  fonts:
+    - family: NotoNaskhArabic
+      fonts:
+        - asset: assets/fonts/NotoNaskhArabic-Regular.ttf
+        - asset: assets/fonts/NotoNaskhArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/NotoNaskhArabic-Bold.ttf
+          weight: 700

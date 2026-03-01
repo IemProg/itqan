@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Itqan — Design System & Style Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── Core Palette ── */
+  --void: #0A0A0F;
+  --obsidian: #111118;
+  --onyx: #1A1A24;
+  --charcoal: #252530;
+  --slate: #3A3A4A;
+  --mist: #6B6B80;
+  --silver: #9B9BB0;
+  --cloud: #CDCDE0;
+  --snow: #EEEEF5;
+  --white: #FAFAFF;
+
+  /* ── Accent: Sacred Gold ── */
+  --gold-deep: #8B6914;
+  --gold: #C9982E;
+  --gold-light: #E8C066;
+  --gold-glow: rgba(201, 152, 46, 0.15);
+  --gold-shimmer: rgba(201, 152, 46, 0.08);
+
+  /* ── Semantic: Feedback ── */
+  --correct: #34D399;
+  --correct-glow: rgba(52, 211, 153, 0.15);
+  --warning: #FBBF24;
+  --warning-glow: rgba(251, 191, 36, 0.15);
+  --error: #F87171;
+  --error-glow: rgba(248, 113, 113, 0.15);
+  --info: #60A5FA;
+  --info-glow: rgba(96, 165, 250, 0.15);
+
+  /* ── Tajweed Colors ── */
+  --tajweed-idgham: #818CF8;
+  --tajweed-ikhfa: #A78BFA;
+  --tajweed-iqlab: #F472B6;
+  --tajweed-izhar: #34D399;
+  --tajweed-madd: #60A5FA;
+  --tajweed-qalqalah: #FBBF24;
+  --tajweed-ghunnah: #FB923C;
+
+  /* ── Typography ── */
+  --font-ui: 'Inter', -apple-system, sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', 'Amiri', serif;
+  --font-display: 'Amiri', serif;
+
+  /* ── Spacing ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* ── Radius ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-subtle: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-card: 0 4px 16px rgba(0,0,0,0.4);
+  --shadow-elevated: 0 8px 32px rgba(0,0,0,0.5);
+  --shadow-gold: 0 4px 20px rgba(201, 152, 46, 0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--void);
+  color: var(--snow);
+  font-family: var(--font-ui);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-xl); }
+.section { padding: var(--space-3xl) 0; border-bottom: 1px solid var(--charcoal); }
+.section:last-child { border-bottom: none; }
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: var(--space-lg);
+}
+.section-subtitle {
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: var(--space-2xl);
+  line-height: 1.3;
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-xl); }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--space-md); }
+
+/* ── Hero ── */
+.hero {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-3xl) 0;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--gold-glow), transparent 70%);
+  pointer-events: none;
+}
+.hero-logo {
+  font-family: var(--font-display);
+  font-size: 72px;
+  color: var(--white);
+  margin-bottom: var(--space-sm);
+  position: relative;
+}
+.hero-arabic {
+  font-family: var(--font-arabic);
+  font-size: 48px;
+  color: var(--gold);
+  margin-bottom: var(--space-lg);
+  font-weight: 400;
+}
+.hero-tagline {
+  font-size: 18px;
+  color: var(--silver);
+  font-weight: 300;
+  letter-spacing: 1px;
+  max-width: 500px;
+}
+
+/* ── Color Swatches ── */
+.swatch-row { display: flex; gap: var(--space-sm); margin-bottom: var(--space-lg); flex-wrap: wrap; }
+.swatch {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-xs);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: transform 0.2s ease;
+}
+.swatch:hover { transform: scale(1.08); }
+.swatch-label { opacity: 0.9; }
+.swatch-hex { opacity: 0.6; font-size: 8px; }
+
+/* ── Typography Samples ── */
+.type-sample { margin-bottom: var(--space-xl); }
+.type-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--mist);
+  margin-bottom: var(--space-xs);
+}
+.type-display { font-size: 48px; font-weight: 300; color: var(--white); line-height: 1.2; }
+.type-h1 { font-size: 32px; font-weight: 600; color: var(--white); }
+.type-h2 { font-size: 24px; font-weight: 500; color: var(--cloud); }
+.type-body { font-size: 16px; font-weight: 400; color: var(--silver); line-height: 1.7; }
+.type-caption { font-size: 13px; font-weight: 400; color: var(--mist); }
+.type-arabic-display { font-family: var(--font-arabic); font-size: 42px; color: var(--white); line-height: 2; direction: rtl; }
+.type-arabic-body { font-family: var(--font-arabic); font-size: 28px; color: var(--cloud); line-height: 2.2; direction: rtl; }
+.type-arabic-small { font-family: var(--font-arabic); font-size: 20px; color: var(--silver); line-height: 2; direction: rtl; }
+
+/* ── Cards ── */
+.card {
+  background: var(--onyx);
+  border: 1px solid var(--charcoal);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.card:hover {
+  border-color: var(--slate);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}
+.card-gold {
+  background: linear-gradient(135deg, var(--onyx), rgba(201, 152, 46, 0.05));
+  border-color: rgba(201, 152, 46, 0.2);
+}
+.card-gold:hover {
+  border-color: rgba(201, 152, 46, 0.4);
+  box-shadow: var(--shadow-gold);
+}
+
+/* ── Buttons ── */
+.btn-row { display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center; margin-bottom: var(--space-lg); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 14px 28px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  letter-spacing: 0.3px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--void);
+  box-shadow: var(--shadow-gold);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(201, 152, 46, 0.35);
+}
+.btn-secondary {
+  background: var(--charcoal);
+  color: var(--snow);
+  border: 1px solid var(--slate);
+}
+.btn-secondary:hover {
+  background: var(--slate);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(201, 152, 46, 0.3);
+}
+.btn-ghost:hover {
+  background: var(--gold-shimmer);
+  border-color: var(--gold);
+}
+.btn-sm { padding: 10px 20px; font-size: 13px; }
+.btn-lg { padding: 18px 36px; font-size: 17px; }
+.btn-icon {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+/* ── Phone Mockup ── */
+.phone-frame {
+  width: 320px;
+  height: 640px;
+  background: var(--obsidian);
+  border-radius: 36px;
+  border: 2px solid var(--charcoal);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-elevated);
+  margin: 0 auto;
+}
+.phone-notch {
+  width: 120px;
+  height: 28px;
+  background: var(--void);
+  border-radius: 0 0 16px 16px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+.phone-screen { padding: 8px 16px; height: calc(100% - 28px); overflow-y: auto; }
+.phone-screen::-webkit-scrollbar { display: none; }
+
+/* ── Status Bar ── */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--snow);
+}
+
+/* ── Score Ring ── */
+.score-ring-container { text-align: center; margin: var(--space-lg) 0; }
+.score-ring {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  display: inline-block;
+}
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring-bg { fill: none; stroke: var(--charcoal); stroke-width: 8; }
+.score-ring-fill { fill: none; stroke: var(--gold); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 408; stroke-dashoffset: 53; transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.score-ring-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--white);
+}
+.score-ring-label {
+  font-size: 11px;
+  color: var(--mist);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: var(--space-xs);
+}
+
+/* ── Ayah Display ── */
+.ayah-container {
+  background: linear-gradient(135deg, var(--onyx), rgba(201, 152, 46, 0.03));
+  border: 1px solid var(--charcoal);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+  direction: rtl;
+  margin: var(--space-lg) 0;
+}
+.ayah-text {
+  font-family: var(--font-arabic);
+  font-size: 28px;
+  line-height: 2.4;
+  color: var(--white);
+}
+.ayah-text .word { display: inline; padding: 2px 4px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+.ayah-text .word:hover { background: var(--gold-shimmer); }
+.ayah-text .word.correct { color: var(--correct); background: var(--correct-glow); }
+.ayah-text .word.warning { color: var(--warning); background: var(--warning-glow); }
+.ayah-text .word.error { color: var(--error); background: var(--error-glow); }
+.ayah-text .word.active { background: var(--gold-glow); color: var(--gold-light); }
+.ayah-meta {
+  margin-top: var(--space-md);
+  font-size: 13px;
+  color: var(--mist);
+  direction: ltr;
+}
+
+/* ── Tajweed Highlights ── */
+.tajweed-legend { display: flex; flex-wrap: wrap; gap: var(--space-md); margin: var(--space-lg) 0; }
+.tajweed-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+}
+.tajweed-tag .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── Score Breakdown Bar ── */
+.score-bar { margin-bottom: var(--space-md); }
+.score-bar-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.score-bar-label { font-size: 13px; color: var(--silver); }
+.score-bar-value { font-size: 13px; font-weight: 600; color: var(--white); }
+.score-bar-track { height: 6px; background: var(--charcoal); border-radius: var(--radius-full); overflow: hidden; }
+.score-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Record Button ── */
+.record-btn-container { text-align: center; margin: var(--space-xl) 0; }
+.record-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border: none;
+  cursor: pointer;
+  position: relative;
+  box-shadow: var(--shadow-gold);
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.record-btn:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(201, 152, 46, 0.4); }
+.record-btn.recording {
+  background: var(--error);
+  box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4);
+  animation: pulse-record 1.5s infinite;
+}
+@keyframes pulse-record {
+  0% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4); }
+  70% { box-shadow: 0 0 0 20px rgba(248, 113, 113, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+}
+.record-icon { width: 24px; height: 24px; }
+
+/* ── Waveform ── */
+.waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 48px;
+  margin: var(--space-md) 0;
+}
+.wave-bar {
+  width: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+  animation: wave 1s ease-in-out infinite;
+}
+@keyframes wave {
+  0%, 100% { height: 8px; opacity: 0.4; }
+  50% { height: 32px; opacity: 1; }
+}
+
+/* ── Bottom Nav ── */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0 8px;
+  background: var(--obsidian);
+  border-top: 1px solid var(--charcoal);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.nav-item { text-align: center; font-size: 10px; color: var(--mist); cursor: pointer; transition: color 0.2s; }
+.nav-item.active { color: var(--gold); }
+.nav-icon { font-size: 20px; margin-bottom: 2px; }
+
+/* ── Geometric Pattern ── */
+.geo-pattern {
+  position: relative;
+  overflow: hidden;
+}
+.geo-pattern::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30z' fill='none' stroke='rgba(201,152,46,0.08)' stroke-width='0.5'/%3E%3Cpath d='M30 10L50 30L30 50L10 30z' fill='none' stroke='rgba(201,152,46,0.05)' stroke-width='0.5'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Glassmorphism Card ── */
+.glass-card {
+  background: rgba(26, 26, 36, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+
+/* ── Progress Heatmap ── */
+.heatmap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.heat-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--charcoal);
+  transition: all 0.2s;
+}
+.heat-cell.l1 { background: rgba(201, 152, 46, 0.15); }
+.heat-cell.l2 { background: rgba(201, 152, 46, 0.3); }
+.heat-cell.l3 { background: rgba(201, 152, 46, 0.5); }
+.heat-cell.l4 { background: var(--gold); }
+
+/* ── Streak Badge ── */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-shimmer);
+  border: 1px solid rgba(201, 152, 46, 0.25);
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--gold-light);
+  font-weight: 500;
+}
+
+/* ── Divider ── */
+.divider {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: var(--space-lg) 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .hero-logo { font-size: 48px; }
+  .hero-arabic { font-size: 36px; }
+  .phone-mockups { flex-direction: column; align-items: center; }
+}
+
+/* ── Scroll Animations ── */
+.fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn 0.6s ease forwards; }
+@keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+.label-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-sm);
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════ HERO ════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-logo">Itqan</div>
+  <div class="hero-arabic">إتقان</div>
+  <div class="divider" style="margin: 0 auto var(--space-lg);"></div>
+  <div class="hero-tagline">Design System & Visual Language</div>
+</div>
+
+<div class="container">
+
+<!-- ════════════════════════════════════════ PHILOSOPHY ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">01 — Design Philosophy</div>
+  <div class="section-subtitle">Sacred Minimalism</div>
+  <div class="grid-2">
+    <div>
+      <p style="color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: var(--space-lg);">
+        Itqan's design language draws from the Islamic tradition of finding beauty through precision and restraint. Just as Islamic geometric art creates infinite complexity from simple shapes, our interface creates a rich experience from minimal elements.
+      </p>
+      <p style="color: var(--silver); font-size: 15px; line-height: 1.8;">
+        The dark canvas represents the quietude of study. Gold accents honor the tradition of gilded Quran manuscripts. Every element serves the sacred text — never competing, always elevating.
+      </p>
+    </div>
+    <div class="card card-gold geo-pattern" style="display: flex; flex-direction: column; justify-content: center; padding: var(--space-2xl);">
+      <div style="font-size: 13px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: var(--space-md);">Principles</div>
+      <div style="margin-bottom: var(--space-md);">
+        <div style="font-weight: 600; color: var(--white); margin-bottom: 4px;">Reverence</div>
+        <div style="font-size: 13px; color: var(--silver);">The Quran text is always the hero. UI recedes.</div>
+      </div>
+      <div style="margin-bottom: var(--space-md);">
+        <div style="font-weight: 600; color: var(--white); margin-bottom: 4px;">Calm</div>
+        <div style="font-size: 13px; color: var(--silver);">No visual noise. Deep breathing room. Focused.</div>
+      </div>
+      <div style="margin-bottom: var(--space-md);">
+        <div style="font-weight: 600; color: var(--white); margin-bottom: 4px;">Precision</div>
+        <div style="font-size: 13px; color: var(--silver);">Every pixel, every spacing, every transition — intentional.</div>
+      </div>
+      <div>
+        <div style="font-weight: 600; color: var(--white); margin-bottom: 4px;">Warmth</div>
+        <div style="font-size: 13px; color: var(--silver);">Encouraging, never judgmental. Gold radiates warmth.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ COLOR SYSTEM ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">02 — Color System</div>
+  <div class="section-subtitle">Ink & Gold</div>
+
+  <div style="margin-bottom: var(--space-xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-sm); text-transform: uppercase; letter-spacing: 1px;">Neutral Scale — Dark Canvas</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background: var(--void);"><span class="swatch-label" style="color: var(--mist);">Void</span><span class="swatch-hex" style="color: var(--slate);">#0A0A0F</span></div>
+      <div class="swatch" style="background: var(--obsidian);"><span class="swatch-label" style="color: var(--mist);">Obsidian</span><span class="swatch-hex" style="color: var(--slate);">#111118</span></div>
+      <div class="swatch" style="background: var(--onyx);"><span class="swatch-label" style="color: var(--mist);">Onyx</span><span class="swatch-hex" style="color: var(--slate);">#1A1A24</span></div>
+      <div class="swatch" style="background: var(--charcoal);"><span class="swatch-label" style="color: var(--silver);">Charcoal</span><span class="swatch-hex" style="color: var(--slate);">#252530</span></div>
+      <div class="swatch" style="background: var(--slate);"><span class="swatch-label" style="color: var(--cloud);">Slate</span><span class="swatch-hex" style="color: var(--mist);">#3A3A4A</span></div>
+      <div class="swatch" style="background: var(--mist);"><span class="swatch-label" style="color: var(--white);">Mist</span><span class="swatch-hex" style="color: var(--silver);">#6B6B80</span></div>
+      <div class="swatch" style="background: var(--silver);"><span class="swatch-label" style="color: var(--void);">Silver</span><span class="swatch-hex" style="color: var(--slate);">#9B9BB0</span></div>
+      <div class="swatch" style="background: var(--cloud);"><span class="swatch-label" style="color: var(--void);">Cloud</span><span class="swatch-hex" style="color: var(--slate);">#CDCDE0</span></div>
+      <div class="swatch" style="background: var(--snow);"><span class="swatch-label" style="color: var(--void);">Snow</span><span class="swatch-hex" style="color: var(--slate);">#EEEEF5</span></div>
+      <div class="swatch" style="background: var(--white);"><span class="swatch-label" style="color: var(--void);">White</span><span class="swatch-hex" style="color: var(--slate);">#FAFAFF</span></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom: var(--space-xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-sm); text-transform: uppercase; letter-spacing: 1px;">Sacred Gold — Primary Accent</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background: var(--gold-deep); width: 120px;"><span class="swatch-label" style="color: var(--gold-light);">Deep</span><span class="swatch-hex" style="color: var(--gold);">#8B6914</span></div>
+      <div class="swatch" style="background: var(--gold); width: 120px;"><span class="swatch-label" style="color: var(--void);">Gold</span><span class="swatch-hex" style="color: var(--void);">#C9982E</span></div>
+      <div class="swatch" style="background: var(--gold-light); width: 120px;"><span class="swatch-label" style="color: var(--void);">Light</span><span class="swatch-hex" style="color: var(--void);">#E8C066</span></div>
+      <div class="swatch" style="background: var(--gold-glow); width: 120px; border-color: rgba(201,152,46,0.2);"><span class="swatch-label" style="color: var(--gold);">Glow</span><span class="swatch-hex" style="color: var(--gold);">15% opacity</span></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom: var(--space-xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-sm); text-transform: uppercase; letter-spacing: 1px;">Feedback Colors</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background: var(--correct); width: 100px;"><span class="swatch-label" style="color: var(--void);">Correct</span><span class="swatch-hex" style="color: rgba(0,0,0,0.5);">#34D399</span></div>
+      <div class="swatch" style="background: var(--warning); width: 100px;"><span class="swatch-label" style="color: var(--void);">Warning</span><span class="swatch-hex" style="color: rgba(0,0,0,0.5);">#FBBF24</span></div>
+      <div class="swatch" style="background: var(--error); width: 100px;"><span class="swatch-label" style="color: var(--void);">Error</span><span class="swatch-hex" style="color: rgba(0,0,0,0.5);">#F87171</span></div>
+      <div class="swatch" style="background: var(--info); width: 100px;"><span class="swatch-label" style="color: var(--void);">Info</span><span class="swatch-hex" style="color: rgba(0,0,0,0.5);">#60A5FA</span></div>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-sm); text-transform: uppercase; letter-spacing: 1px;">Tajweed Color Coding</div>
+    <div class="tajweed-legend">
+      <div class="tajweed-tag" style="background: rgba(129,140,248,0.12); color: var(--tajweed-idgham);"><span class="dot" style="background: var(--tajweed-idgham);"></span>Idgham</div>
+      <div class="tajweed-tag" style="background: rgba(167,139,250,0.12); color: var(--tajweed-ikhfa);"><span class="dot" style="background: var(--tajweed-ikhfa);"></span>Ikhfa</div>
+      <div class="tajweed-tag" style="background: rgba(244,114,182,0.12); color: var(--tajweed-iqlab);"><span class="dot" style="background: var(--tajweed-iqlab);"></span>Iqlab</div>
+      <div class="tajweed-tag" style="background: rgba(52,211,153,0.12); color: var(--tajweed-izhar);"><span class="dot" style="background: var(--tajweed-izhar);"></span>Izhar</div>
+      <div class="tajweed-tag" style="background: rgba(96,165,250,0.12); color: var(--tajweed-madd);"><span class="dot" style="background: var(--tajweed-madd);"></span>Madd</div>
+      <div class="tajweed-tag" style="background: rgba(251,191,36,0.12); color: var(--tajweed-qalqalah);"><span class="dot" style="background: var(--tajweed-qalqalah);"></span>Qalqalah</div>
+      <div class="tajweed-tag" style="background: rgba(251,146,60,0.12); color: var(--tajweed-ghunnah);"><span class="dot" style="background: var(--tajweed-ghunnah);"></span>Ghunnah</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ TYPOGRAPHY ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">03 — Typography</div>
+  <div class="section-subtitle">Two Worlds, One Voice</div>
+
+  <div class="grid-2">
+    <div>
+      <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-lg); text-transform: uppercase; letter-spacing: 1px;">Latin — Interface Text</div>
+      <div class="type-sample"><div class="type-label">Display / 48px Light</div><div class="type-display">Perfect your recitation</div></div>
+      <div class="type-sample"><div class="type-label">Heading 1 / 32px Semibold</div><div class="type-h1">Your Progress</div></div>
+      <div class="type-sample"><div class="type-label">Heading 2 / 24px Medium</div><div class="type-h2">Tajweed Breakdown</div></div>
+      <div class="type-sample"><div class="type-label">Body / 16px Regular</div><div class="type-body">Itqan listens to your recitation and provides instant feedback on pronunciation accuracy and tajweed compliance.</div></div>
+      <div class="type-sample"><div class="type-label">Caption / 13px Regular</div><div class="type-caption">Surah Al-Fatiha — Ayah 1 of 7</div></div>
+    </div>
+    <div>
+      <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-lg); text-transform: uppercase; letter-spacing: 1px;">Arabic — Quran & UI</div>
+      <div class="type-sample"><div class="type-label">Quran Display / Noto Naskh 42px</div><div class="type-arabic-display">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div></div>
+      <div class="type-sample"><div class="type-label">Quran Body / 28px</div><div class="type-arabic-body">ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ</div></div>
+      <div class="type-sample"><div class="type-label">Arabic UI / 20px</div><div class="type-arabic-small">إتقان — أتقن تلاوتك</div></div>
+      <div class="card" style="margin-top: var(--space-lg); padding: var(--space-lg);">
+        <div style="font-size: 12px; color: var(--gold); margin-bottom: var(--space-sm); text-transform: uppercase; letter-spacing: 1px;">Font Stack</div>
+        <div style="font-size: 14px; color: var(--silver); line-height: 2;">
+          <strong style="color: var(--white);">Quran text:</strong> KFGQPC Uthmani Hafs (primary), Noto Naskh Arabic (fallback)<br>
+          <strong style="color: var(--white);">Arabic UI:</strong> Noto Naskh Arabic<br>
+          <strong style="color: var(--white);">Latin UI:</strong> Inter<br>
+          <strong style="color: var(--white);">Display:</strong> Amiri (decorative headers)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ COMPONENTS ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">04 — Components</div>
+  <div class="section-subtitle">Building Blocks</div>
+
+  <!-- Buttons -->
+  <div style="margin-bottom: var(--space-2xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Buttons</div>
+    <div class="btn-row">
+      <button class="btn btn-primary">Start Reciting</button>
+      <button class="btn btn-secondary">Listen First</button>
+      <button class="btn btn-ghost">View Details</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Default</button>
+      <button class="btn btn-primary btn-lg">Large</button>
+      <button class="btn btn-primary btn-icon">▶</button>
+      <button class="btn btn-secondary btn-icon">⏸</button>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div style="margin-bottom: var(--space-2xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Cards</div>
+    <div class="grid-3">
+      <div class="card">
+        <div style="font-size: 11px; color: var(--mist); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-sm);">Surah</div>
+        <div style="font-size: 20px; font-weight: 600; color: var(--white); margin-bottom: 4px;">Al-Fatiha</div>
+        <div style="font-family: var(--font-arabic); font-size: 18px; color: var(--gold); direction: rtl; margin-bottom: var(--space-sm);">الفاتحة</div>
+        <div style="font-size: 13px; color: var(--mist);">7 Ayahs · Meccan</div>
+        <div style="margin-top: var(--space-md);">
+          <div class="score-bar">
+            <div class="score-bar-track"><div class="score-bar-fill" style="width: 87%; background: var(--gold);"></div></div>
+          </div>
+          <div style="font-size: 11px; color: var(--mist);">87% mastery</div>
+        </div>
+      </div>
+      <div class="card card-gold">
+        <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-sm);">Today's Goal</div>
+        <div style="font-size: 36px; font-weight: 700; color: var(--white); margin-bottom: 4px;">3 / 5</div>
+        <div style="font-size: 14px; color: var(--silver); margin-bottom: var(--space-md);">Ayahs practiced</div>
+        <div class="streak-badge">🔥 12 day streak</div>
+      </div>
+      <div class="glass-card">
+        <div style="font-size: 11px; color: var(--mist); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-sm);">Last Session</div>
+        <div style="font-size: 24px; font-weight: 600; color: var(--correct); margin-bottom: 4px;">92</div>
+        <div style="font-size: 13px; color: var(--silver); margin-bottom: var(--space-md);">Your best score this week</div>
+        <div style="font-size: 12px; color: var(--mist);">Al-Baqarah 2:255 · 2 min ago</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ayah Display with Feedback -->
+  <div style="margin-bottom: var(--space-2xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Ayah Display — Recitation Feedback</div>
+    <div class="ayah-container">
+      <div class="ayah-text">
+        <span class="word correct">بِسْمِ</span>
+        <span class="word correct">ٱللَّهِ</span>
+        <span class="word warning">ٱلرَّحْمَـٰنِ</span>
+        <span class="word correct">ٱلرَّحِيمِ</span>
+      </div>
+      <div class="ayah-meta">Al-Fatiha 1:1 · Tap a word for details</div>
+    </div>
+    <div class="ayah-container" style="border-color: rgba(201, 152, 46, 0.15);">
+      <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-sm);">Active Recitation</div>
+      <div class="ayah-text">
+        <span class="word correct">ٱلْحَمْدُ</span>
+        <span class="word correct">لِلَّهِ</span>
+        <span class="word active">رَبِّ</span>
+        <span class="word" style="color: var(--slate);">ٱلْعَـٰلَمِينَ</span>
+      </div>
+      <div class="waveform">
+        <div class="wave-bar" style="animation-delay: 0s; height: 12px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.1s; height: 20px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.2s; height: 28px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.3s; height: 16px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.15s; height: 24px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.25s; height: 32px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.05s; height: 18px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.35s; height: 10px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.12s; height: 22px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.28s; height: 14px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.08s; height: 26px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.18s; height: 20px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.22s; height: 30px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.32s; height: 16px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.02s; height: 24px;"></div>
+        <div class="wave-bar" style="animation-delay: 0.16s; height: 12px;"></div>
+      </div>
+      <div class="ayah-meta">Recording... · Tap to stop</div>
+    </div>
+  </div>
+
+  <!-- Score Display -->
+  <div style="margin-bottom: var(--space-2xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Score Display</div>
+    <div class="grid-2">
+      <div class="card" style="text-align: center;">
+        <div class="score-ring">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle class="score-ring-bg" cx="70" cy="70" r="65"/>
+            <circle class="score-ring-fill" cx="70" cy="70" r="65"/>
+          </svg>
+          <div class="score-ring-value">87</div>
+        </div>
+        <div class="score-ring-label">Overall Score</div>
+      </div>
+      <div class="card">
+        <div style="font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: var(--space-lg);">Breakdown</div>
+        <div class="score-bar">
+          <div class="score-bar-header"><span class="score-bar-label">Word Accuracy</span><span class="score-bar-value">95</span></div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width: 95%; background: var(--correct);"></div></div>
+        </div>
+        <div class="score-bar">
+          <div class="score-bar-header"><span class="score-bar-label">Letter Accuracy</span><span class="score-bar-value">85</span></div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width: 85%; background: var(--gold);"></div></div>
+        </div>
+        <div class="score-bar">
+          <div class="score-bar-header"><span class="score-bar-label">Tashkeel</span><span class="score-bar-value">82</span></div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width: 82%; background: var(--gold);"></div></div>
+        </div>
+        <div class="score-bar">
+          <div class="score-bar-header"><span class="score-bar-label">Tajweed</span><span class="score-bar-value">78</span></div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width: 78%; background: var(--warning);"></div></div>
+        </div>
+        <div class="score-bar">
+          <div class="score-bar-header"><span class="score-bar-label">Fluency</span><span class="score-bar-value">92</span></div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width: 92%; background: var(--correct);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heatmap -->
+  <div style="margin-bottom: var(--space-2xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Activity Heatmap</div>
+    <div class="card" style="max-width: 500px;">
+      <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-md);">
+        <span style="font-size: 14px; font-weight: 500; color: var(--white);">Practice Activity</span>
+        <span class="streak-badge" style="font-size: 12px; padding: 4px 12px;">🔥 12</span>
+      </div>
+      <div class="heatmap">
+        <div class="heat-cell"></div><div class="heat-cell l1"></div><div class="heat-cell l2"></div><div class="heat-cell"></div><div class="heat-cell l1"></div><div class="heat-cell l3"></div><div class="heat-cell l2"></div>
+        <div class="heat-cell l1"></div><div class="heat-cell l2"></div><div class="heat-cell l4"></div><div class="heat-cell l3"></div><div class="heat-cell l2"></div><div class="heat-cell"></div><div class="heat-cell l1"></div>
+        <div class="heat-cell l2"></div><div class="heat-cell"></div><div class="heat-cell l1"></div><div class="heat-cell l4"></div><div class="heat-cell l3"></div><div class="heat-cell l4"></div><div class="heat-cell l2"></div>
+        <div class="heat-cell l3"></div><div class="heat-cell l4"></div><div class="heat-cell l2"></div><div class="heat-cell l3"></div><div class="heat-cell l4"></div><div class="heat-cell l4"></div><div class="heat-cell l3"></div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: var(--space-sm); font-size: 11px; color: var(--mist);">
+        Less <div class="heat-cell" style="width: 12px; height: 12px; display: inline-block;"></div><div class="heat-cell l1" style="width: 12px; height: 12px; display: inline-block;"></div><div class="heat-cell l2" style="width: 12px; height: 12px; display: inline-block;"></div><div class="heat-cell l3" style="width: 12px; height: 12px; display: inline-block;"></div><div class="heat-cell l4" style="width: 12px; height: 12px; display: inline-block;"></div> More
+      </div>
+    </div>
+  </div>
+
+  <!-- Record Button -->
+  <div style="margin-bottom: var(--space-2xl);">
+    <div style="font-size: 13px; color: var(--mist); margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Record Button States</div>
+    <div style="display: flex; gap: var(--space-2xl); align-items: center; justify-content: center;">
+      <div style="text-align: center;">
+        <button class="record-btn">
+          <svg class="record-icon" viewBox="0 0 24 24" fill="none" stroke="#0A0A0F" stroke-width="2.5">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+          </svg>
+        </button>
+        <div style="font-size: 12px; color: var(--mist); margin-top: var(--space-sm);">Ready</div>
+      </div>
+      <div style="text-align: center;">
+        <button class="record-btn recording">
+          <svg class="record-icon" viewBox="0 0 24 24" fill="#FAFAFF">
+            <rect x="6" y="6" width="12" height="12" rx="2"/>
+          </svg>
+        </button>
+        <div style="font-size: 12px; color: var(--error); margin-top: var(--space-sm);">Recording</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ PHONE MOCKUPS ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">05 — Screen Mockups</div>
+  <div class="section-subtitle">Key Screens</div>
+
+  <div style="display: flex; gap: var(--space-2xl); flex-wrap: wrap; justify-content: center;">
+
+    <!-- Screen 1: Home -->
+    <div>
+      <div style="font-size: 12px; color: var(--mist); text-align: center; margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Home</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>●●● WiFi 🔋</span>
+          </div>
+          <!-- Greeting -->
+          <div style="margin: 12px 0 20px;">
+            <div style="font-size: 13px; color: var(--mist);">Assalamu Alaikum</div>
+            <div style="font-size: 22px; font-weight: 600; color: var(--white);">Imad</div>
+          </div>
+          <!-- Streak Card -->
+          <div style="background: linear-gradient(135deg, var(--onyx), rgba(201,152,46,0.06)); border: 1px solid rgba(201,152,46,0.15); border-radius: 14px; padding: 16px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px;">Today's Progress</div>
+                <div style="font-size: 28px; font-weight: 700; color: var(--white); margin: 4px 0;">3 / 5</div>
+                <div style="font-size: 12px; color: var(--silver);">Ayahs remaining</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 28px;">🔥</div>
+                <div style="font-size: 11px; color: var(--gold-light); font-weight: 600;">12 days</div>
+              </div>
+            </div>
+            <div style="margin-top: 12px; height: 4px; background: var(--charcoal); border-radius: 99px;">
+              <div style="width: 60%; height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 99px;"></div>
+            </div>
+          </div>
+          <!-- Continue -->
+          <div style="font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 10px;">Continue</div>
+          <div style="background: var(--onyx); border: 1px solid var(--charcoal); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 14px; font-weight: 500; color: var(--white);">Al-Baqarah</div>
+              <div style="font-size: 12px; color: var(--mist);">Ayah 255 · Ayat Al-Kursi</div>
+            </div>
+            <div style="width: 36px; height: 36px; background: var(--gold-shimmer); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 14px;">▶</div>
+          </div>
+          <!-- Quick Actions -->
+          <div style="font-size: 13px; font-weight: 600; color: var(--white); margin: 16px 0 10px;">Practice</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div style="background: var(--onyx); border: 1px solid var(--charcoal); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; margin-bottom: 6px;">📖</div>
+              <div style="font-size: 12px; font-weight: 500; color: var(--white);">Read</div>
+              <div style="font-size: 10px; color: var(--mist);">With text</div>
+            </div>
+            <div style="background: var(--onyx); border: 1px solid var(--charcoal); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; margin-bottom: 6px;">🧠</div>
+              <div style="font-size: 12px; font-weight: 500; color: var(--white);">Memorize</div>
+              <div style="font-size: 10px; color: var(--mist);">From memory</div>
+            </div>
+            <div style="background: var(--onyx); border: 1px solid var(--charcoal); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; margin-bottom: 6px;">🎧</div>
+              <div style="font-size: 12px; font-weight: 500; color: var(--white);">Listen</div>
+              <div style="font-size: 10px; color: var(--mist);">Qari audio</div>
+            </div>
+            <div style="background: var(--onyx); border: 1px solid var(--charcoal); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; margin-bottom: 6px;">📊</div>
+              <div style="font-size: 12px; font-weight: 500; color: var(--white);">Progress</div>
+              <div style="font-size: 10px; color: var(--mist);">Analytics</div>
+            </div>
+          </div>
+          <!-- Bottom Nav -->
+          <div class="bottom-nav">
+            <div class="nav-item active"><div class="nav-icon">🏠</div>Home</div>
+            <div class="nav-item"><div class="nav-icon">📖</div>Quran</div>
+            <div class="nav-item"><div class="nav-icon" style="font-size: 28px; margin-top: -8px; color: var(--gold);">◉</div></div>
+            <div class="nav-item"><div class="nav-icon">📊</div>Progress</div>
+            <div class="nav-item"><div class="nav-icon">⚙️</div>Settings</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 2: Recitation -->
+    <div>
+      <div style="font-size: 12px; color: var(--mist); text-align: center; margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Recitation</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>●●● WiFi 🔋</span>
+          </div>
+          <!-- Header -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 8px 0 16px;">
+            <div style="font-size: 14px; color: var(--silver);">← Back</div>
+            <div style="font-size: 13px; color: var(--gold); font-weight: 500;">Al-Fatiha</div>
+            <div style="font-size: 14px; color: var(--silver);">⋯</div>
+          </div>
+          <!-- Ayah Number -->
+          <div style="text-align: center; margin-bottom: 12px;">
+            <span style="display: inline-block; width: 28px; height: 28px; border: 1px solid var(--gold); border-radius: 50%; line-height: 28px; font-size: 11px; color: var(--gold); transform: rotate(45deg);">
+              <span style="display: block; transform: rotate(-45deg);">1</span>
+            </span>
+          </div>
+          <!-- Quran Text -->
+          <div style="background: linear-gradient(135deg, var(--onyx), rgba(201,152,46,0.03)); border: 1px solid var(--charcoal); border-radius: 14px; padding: 20px 16px; text-align: center; margin-bottom: 16px;">
+            <div style="font-family: 'Noto Naskh Arabic', serif; font-size: 26px; line-height: 2.2; color: var(--white); direction: rtl;">
+              <span style="color: var(--correct); background: rgba(52,211,153,0.1); padding: 2px 4px; border-radius: 4px;">بِسْمِ</span>
+              <span style="color: var(--correct); background: rgba(52,211,153,0.1); padding: 2px 4px; border-radius: 4px;">ٱللَّهِ</span>
+              <span style="color: var(--gold-light); background: var(--gold-shimmer); padding: 2px 6px; border-radius: 4px; border-bottom: 2px solid var(--gold);">ٱلرَّحْمَـٰنِ</span>
+              <span style="color: var(--slate);">ٱلرَّحِيمِ</span>
+            </div>
+          </div>
+          <!-- Waveform -->
+          <div style="display: flex; align-items: center; justify-content: center; gap: 2px; height: 40px; margin-bottom: 16px;">
+            <div style="width: 2px; height: 10px; background: var(--gold); border-radius: 1px; opacity: 0.4;"></div>
+            <div style="width: 2px; height: 18px; background: var(--gold); border-radius: 1px; opacity: 0.6;"></div>
+            <div style="width: 2px; height: 28px; background: var(--gold); border-radius: 1px; opacity: 0.8;"></div>
+            <div style="width: 2px; height: 22px; background: var(--gold); border-radius: 1px; opacity: 0.7;"></div>
+            <div style="width: 2px; height: 32px; background: var(--gold); border-radius: 1px;"></div>
+            <div style="width: 2px; height: 14px; background: var(--gold); border-radius: 1px; opacity: 0.5;"></div>
+            <div style="width: 2px; height: 26px; background: var(--gold); border-radius: 1px; opacity: 0.9;"></div>
+            <div style="width: 2px; height: 20px; background: var(--gold); border-radius: 1px; opacity: 0.7;"></div>
+            <div style="width: 2px; height: 12px; background: var(--gold); border-radius: 1px; opacity: 0.4;"></div>
+            <div style="width: 2px; height: 24px; background: var(--gold); border-radius: 1px; opacity: 0.8;"></div>
+            <div style="width: 2px; height: 30px; background: var(--gold); border-radius: 1px;"></div>
+            <div style="width: 2px; height: 16px; background: var(--gold); border-radius: 1px; opacity: 0.5;"></div>
+          </div>
+          <!-- Record Button -->
+          <div style="text-align: center; margin-bottom: 16px;">
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #C9982E, #E8C066); margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(201,152,46,0.3);">
+              <div style="width: 20px; height: 20px; border-radius: 4px; background: var(--void);"></div>
+            </div>
+            <div style="font-size: 11px; color: var(--error); margin-top: 8px; font-weight: 500;">● Recording 0:03</div>
+          </div>
+          <!-- Controls -->
+          <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 16px;">
+            <div style="text-align: center; font-size: 11px; color: var(--mist);">
+              <div style="width: 40px; height: 40px; background: var(--charcoal); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; font-size: 16px;">🔊</div>
+              Listen
+            </div>
+            <div style="text-align: center; font-size: 11px; color: var(--mist);">
+              <div style="width: 40px; height: 40px; background: var(--charcoal); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; font-size: 16px;">🔄</div>
+              Retry
+            </div>
+            <div style="text-align: center; font-size: 11px; color: var(--mist);">
+              <div style="width: 40px; height: 40px; background: var(--charcoal); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; font-size: 16px;">→</div>
+              Next
+            </div>
+          </div>
+          <!-- Bottom Nav -->
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon">🏠</div>Home</div>
+            <div class="nav-item active"><div class="nav-icon">📖</div>Quran</div>
+            <div class="nav-item"><div class="nav-icon" style="font-size: 28px; margin-top: -8px; color: var(--gold);">◉</div></div>
+            <div class="nav-item"><div class="nav-icon">📊</div>Progress</div>
+            <div class="nav-item"><div class="nav-icon">⚙️</div>Settings</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3: Results -->
+    <div>
+      <div style="font-size: 12px; color: var(--mist); text-align: center; margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 1px;">Results</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>●●● WiFi 🔋</span>
+          </div>
+          <div style="text-align: center; margin: 12px 0 8px;">
+            <div style="font-size: 13px; color: var(--mist);">Al-Fatiha · Ayah 1</div>
+          </div>
+          <!-- Score Circle -->
+          <div style="text-align: center; margin: 8px 0 16px; position: relative;">
+            <svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg);">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#252530" stroke-width="7"/>
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#C9982E" stroke-width="7" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="42"/>
+            </svg>
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              <div style="font-size: 32px; font-weight: 700; color: var(--white);">87</div>
+              <div style="font-size: 10px; color: var(--mist); text-transform: uppercase; letter-spacing: 1px;">Score</div>
+            </div>
+          </div>
+          <!-- Score Bars -->
+          <div style="background: var(--onyx); border-radius: 12px; padding: 14px; margin-bottom: 12px;">
+            <div style="margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--silver);">Words</span><span style="color: var(--white); font-weight: 600;">95</span>
+              </div>
+              <div style="height: 4px; background: var(--charcoal); border-radius: 99px;"><div style="width: 95%; height: 100%; background: var(--correct); border-radius: 99px;"></div></div>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--silver);">Letters</span><span style="color: var(--white); font-weight: 600;">85</span>
+              </div>
+              <div style="height: 4px; background: var(--charcoal); border-radius: 99px;"><div style="width: 85%; height: 100%; background: var(--gold); border-radius: 99px;"></div></div>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--silver);">Tajweed</span><span style="color: var(--white); font-weight: 600;">78</span>
+              </div>
+              <div style="height: 4px; background: var(--charcoal); border-radius: 99px;"><div style="width: 78%; height: 100%; background: var(--warning); border-radius: 99px;"></div></div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--silver);">Fluency</span><span style="color: var(--white); font-weight: 600;">92</span>
+              </div>
+              <div style="height: 4px; background: var(--charcoal); border-radius: 99px;"><div style="width: 92%; height: 100%; background: var(--correct); border-radius: 99px;"></div></div>
+            </div>
+          </div>
+          <!-- Mistake Detail -->
+          <div style="background: var(--onyx); border-radius: 12px; padding: 14px; margin-bottom: 12px; border-left: 3px solid var(--warning);">
+            <div style="font-size: 11px; color: var(--warning); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Tajweed Note</div>
+            <div style="font-family: 'Noto Naskh Arabic', serif; font-size: 20px; color: var(--white); direction: rtl; margin-bottom: 6px;">ٱلرَّحْمَـٰنِ</div>
+            <div style="font-size: 12px; color: var(--silver); line-height: 1.6;">Madd length was 1 count — should be 2 counts (Madd Tabee'i). Try holding the vowel slightly longer.</div>
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+              <div style="padding: 6px 14px; background: var(--charcoal); border-radius: 99px; font-size: 11px; color: var(--white); cursor: pointer;">🔊 Hear correct</div>
+              <div style="padding: 6px 14px; background: var(--charcoal); border-radius: 99px; font-size: 11px; color: var(--white); cursor: pointer;">🎤 My audio</div>
+            </div>
+          </div>
+          <!-- Actions -->
+          <div style="display: flex; gap: 8px; margin-bottom: 60px;">
+            <div style="flex: 1; padding: 12px; background: linear-gradient(135deg, #C9982E, #E8C066); border-radius: 99px; text-align: center; font-size: 13px; font-weight: 600; color: var(--void);">Retry Ayah</div>
+            <div style="flex: 1; padding: 12px; background: var(--charcoal); border-radius: 99px; text-align: center; font-size: 13px; font-weight: 500; color: var(--white);">Next →</div>
+          </div>
+          <!-- Bottom Nav -->
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon">🏠</div>Home</div>
+            <div class="nav-item active"><div class="nav-icon">📖</div>Quran</div>
+            <div class="nav-item"><div class="nav-icon" style="font-size: 28px; margin-top: -8px; color: var(--gold);">◉</div></div>
+            <div class="nav-item"><div class="nav-icon">📊</div>Progress</div>
+            <div class="nav-item"><div class="nav-icon">⚙️</div>Settings</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ ANIMATION SPEC ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">06 — Motion & Animation</div>
+  <div class="section-subtitle">Fluid & Intentional</div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-md);">Easing Curves</div>
+      <div style="margin-bottom: 12px;"><strong style="color: var(--white); font-size: 13px;">Standard</strong><br><span style="font-size: 12px; color: var(--mist); font-family: monospace;">cubic-bezier(0.25, 0.46, 0.45, 0.94)</span></div>
+      <div style="margin-bottom: 12px;"><strong style="color: var(--white); font-size: 13px;">Enter</strong><br><span style="font-size: 12px; color: var(--mist); font-family: monospace;">cubic-bezier(0.0, 0.0, 0.2, 1.0)</span></div>
+      <div><strong style="color: var(--white); font-size: 13px;">Exit</strong><br><span style="font-size: 12px; color: var(--mist); font-family: monospace;">cubic-bezier(0.4, 0.0, 1.0, 1.0)</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-md);">Durations</div>
+      <div style="margin-bottom: 12px;"><strong style="color: var(--white); font-size: 13px;">Instant</strong><br><span style="font-size: 12px; color: var(--mist);">100ms — buttons, toggles</span></div>
+      <div style="margin-bottom: 12px;"><strong style="color: var(--white); font-size: 13px;">Quick</strong><br><span style="font-size: 12px; color: var(--mist);">200ms — cards, highlights</span></div>
+      <div style="margin-bottom: 12px;"><strong style="color: var(--white); font-size: 13px;">Standard</strong><br><span style="font-size: 12px; color: var(--mist);">300ms — page transitions</span></div>
+      <div><strong style="color: var(--white); font-size: 13px;">Dramatic</strong><br><span style="font-size: 12px; color: var(--mist);">500ms+ — score reveals, celebrations</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-md);">Key Animations</div>
+      <div style="font-size: 13px; color: var(--silver); line-height: 2;">
+        Word highlight sweep<br>
+        Score counter roll-up<br>
+        Record button pulse<br>
+        Waveform real-time<br>
+        Page turn (mushaf)<br>
+        Confetti on milestones<br>
+        Score ring draw-on
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ SPACING ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">07 — Spacing & Layout</div>
+  <div class="section-subtitle">8px Grid System</div>
+  <div class="grid-2">
+    <div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 4px; height: 4px; background: var(--gold); border-radius: 1px;"></div>
+          <span style="font-size: 12px; color: var(--mist); width: 40px;">4px</span>
+          <span style="font-size: 13px; color: var(--silver);">xs — inline spacing, icon gaps</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 8px; height: 8px; background: var(--gold); border-radius: 1px;"></div>
+          <span style="font-size: 12px; color: var(--mist); width: 40px;">8px</span>
+          <span style="font-size: 13px; color: var(--silver);">sm — tight component spacing</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 16px; height: 16px; background: var(--gold); border-radius: 2px;"></div>
+          <span style="font-size: 12px; color: var(--mist); width: 40px;">16px</span>
+          <span style="font-size: 13px; color: var(--silver);">md — default padding, margins</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 24px; height: 24px; background: var(--gold); border-radius: 2px;"></div>
+          <span style="font-size: 12px; color: var(--mist); width: 40px;">24px</span>
+          <span style="font-size: 13px; color: var(--silver);">lg — card padding, section gaps</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 32px; height: 32px; background: var(--gold); border-radius: 3px;"></div>
+          <span style="font-size: 12px; color: var(--mist); width: 40px;">32px</span>
+          <span style="font-size: 13px; color: var(--silver);">xl — major section spacing</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 48px; height: 48px; background: var(--gold); border-radius: 4px; opacity: 0.7;"></div>
+          <span style="font-size: 12px; color: var(--mist); width: 40px;">48px</span>
+          <span style="font-size: 13px; color: var(--silver);">2xl — page-level breathing room</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-md);">Layout Rules</div>
+      <div style="font-size: 13px; color: var(--silver); line-height: 2;">
+        Screen edge padding: 16px<br>
+        Card internal padding: 16–24px<br>
+        Bottom nav height: 56px<br>
+        Status bar clearance: 44px (iOS)<br>
+        Minimum touch target: 44×44px<br>
+        Ayah text line-height: 2.2–2.4×<br>
+        Max content width: 100% (mobile)<br>
+        Card border-radius: 12–16px<br>
+        Button border-radius: 9999px (pill)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ LIGHT MODE NOTE ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">08 — Light Mode (Phase 2)</div>
+  <div class="section-subtitle">Parchment & Ink</div>
+  <div class="grid-2">
+    <div>
+      <p style="color: var(--silver); font-size: 14px; line-height: 1.8; margin-bottom: var(--space-lg);">
+        The primary experience is dark mode — it reduces eye strain during long recitation sessions and evokes the focus of a dimly lit study room. However, a light mode will be offered in Phase 2 for outdoor use and user preference.
+      </p>
+      <p style="color: var(--silver); font-size: 14px; line-height: 1.8;">
+        Light mode draws from aged parchment and traditional manuscript aesthetics — warm cream backgrounds, deep ink text, with the same gold accents.
+      </p>
+    </div>
+    <div>
+      <div class="swatch-row">
+        <div class="swatch" style="background: #FDFBF7; width: 90px;"><span class="swatch-label" style="color: #3D3526;">Parchment</span><span class="swatch-hex" style="color: #8B7D6B;">#FDFBF7</span></div>
+        <div class="swatch" style="background: #F5F0E8; width: 90px;"><span class="swatch-label" style="color: #3D3526;">Linen</span><span class="swatch-hex" style="color: #8B7D6B;">#F5F0E8</span></div>
+        <div class="swatch" style="background: #E8E0D4; width: 90px;"><span class="swatch-label" style="color: #3D3526;">Sand</span><span class="swatch-hex" style="color: #8B7D6B;">#E8E0D4</span></div>
+        <div class="swatch" style="background: #1C1810; width: 90px;"><span class="swatch-label" style="color: #C9982E;">Ink</span><span class="swatch-hex" style="color: #8B7D6B;">#1C1810</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ FOOTER ════════════════════════════════════════ -->
+<div style="text-align: center; padding: var(--space-3xl) 0;">
+  <div style="font-family: var(--font-display); font-size: 32px; color: var(--white); margin-bottom: var(--space-xs);">Itqan</div>
+  <div style="font-family: var(--font-arabic); font-size: 20px; color: var(--gold); margin-bottom: var(--space-lg);">إتقان</div>
+  <div style="font-size: 13px; color: var(--mist);">Design System v1.0 · March 2026</div>
+</div>
+
+</div>
+
+</body>
+</html>
