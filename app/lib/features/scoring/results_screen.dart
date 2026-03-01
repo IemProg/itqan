@@ -6,6 +6,7 @@ import '../quran/models/ayah.dart';
 import 'models/score_result.dart';
 import '../../shared/widgets/score_ring.dart';
 import '../../shared/widgets/gold_button.dart';
+import 'widgets/word_detail_sheet.dart';
 
 class ResultsScreen extends StatelessWidget {
   final ScoreResult result;
@@ -211,22 +212,27 @@ class _WordAnalysis extends StatelessWidget {
         spacing: ItqanSpacing.sm,
         runSpacing: ItqanSpacing.sm,
         children: wordScores.map((ws) {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: _color(ws.score).withOpacity(0.12),
-              borderRadius: BorderRadius.circular(ItqanRadius.sm),
-              border: Border.all(color: _color(ws.score).withOpacity(0.4)),
-            ),
-            child: Text(
-              ws.word,
-              style: TextStyle(
-                fontFamily: 'NotoNaskhArabic',
-                fontSize: 22,
-                color: _color(ws.score),
-                height: 1.8,
+          return Builder(
+            builder: (ctx) => GestureDetector(
+              onTap: () => showWordDetail(ctx, ws),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _color(ws.score).withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(ItqanRadius.sm),
+                  border: Border.all(color: _color(ws.score).withOpacity(0.4)),
+                ),
+                child: Text(
+                  ws.word,
+                  style: TextStyle(
+                    fontFamily: 'NotoNaskhArabic',
+                    fontSize: 22,
+                    color: _color(ws.score),
+                    height: 1.8,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
               ),
-              textDirection: TextDirection.rtl,
             ),
           );
         }).toList(),

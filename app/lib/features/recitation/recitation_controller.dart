@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
@@ -115,9 +116,31 @@ class RecitationController extends StateNotifier<RecitationData> {
           ayah: state.ayah!,
         );
         state = state.copyWith(state: RecitationState.scored, result: result);
+        await _saveSession(result);
       } catch (e) {
         state = state.copyWith(state: RecitationState.idle, error: 'Scoring failed: $e');
       }
+    }
+  }
+
+  Future<void> _saveSession(ScoreResult result) async {
+    try {
+      if (!Hive.isBoxOpen('sessions')) {
+        await Hive.openBox('sessions');
+      }
+      final box = Hive.box('sessions');
+      await box.add({
+        'surah': result.surahNumber,
+        'ayah': result.ayahNumber,
+        'overall': result.overall,
+        'wordAccuracy': result.wordAccuracy,
+        'letterAccuracy': result.letterAccuracy,
+        'tajweed': result.tajweed,
+        'fluency': result.fluency,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+    } catch (_) {
+      // Non-fatal: ignore Hive errors
     }
   }
 

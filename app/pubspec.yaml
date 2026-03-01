@@ -55,3 +55,8 @@ flutter:
           weight: 500
         - asset: assets/fonts/NotoNaskhArabic-Bold.ttf
           weight: 700
+    - family: Amiri
+      fonts:
+        - asset: assets/fonts/Amiri-Regular.ttf
+        - asset: assets/fonts/Amiri-Bold.ttf
+          weight: 700

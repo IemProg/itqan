@@ -6,6 +6,8 @@ import '../../core/theme/typography.dart';
 import '../quran/models/ayah.dart';
 import '../quran/services/quran_service.dart';
 import '../recitation/recitation_screen.dart';
+import '../tajweed/tajweed_data.dart';
+import '../settings/settings_service.dart';
 
 final quranServiceProvider = Provider((ref) => QuranService());
 
@@ -121,13 +123,26 @@ class _SurahTile extends StatelessWidget {
   }
 }
 
-class _AyahListScreen extends ConsumerWidget {
+class _AyahListScreen extends ConsumerStatefulWidget {
   final Surah surah;
   const _AyahListScreen({required this.surah});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_AyahListScreen> createState() => _AyahListScreenState();
+}
+
+class _AyahListScreenState extends ConsumerState<_AyahListScreen> {
+  bool _tajweedEnabled = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final surah = widget.surah;
     final ayahsAsync = ref.watch(ayahsProvider(surah.number));
+    final settings = ref.watch(settingsProvider);
+    // Sync toggle with global setting on first build
+    if (settings.tajweedOverlay != _tajweedEnabled && !_tajweedEnabled) {
+      _tajweedEnabled = settings.tajweedOverlay;
+    }
 
     return Scaffold(
       backgroundColor: ItqanColors.void_,
@@ -135,15 +150,16 @@ class _AyahListScreen extends ConsumerWidget {
         title: Text(surah.nameSimple, style: ItqanTypography.heading2),
         backgroundColor: ItqanColors.void_,
         actions: [
+          IconButton(
+            icon: Icon(Icons.auto_fix_high_rounded, color: _tajweedEnabled ? ItqanColors.gold : ItqanColors.mist),
+            tooltip: 'Tajweed Overlay',
+            onPressed: () => setState(() => _tajweedEnabled = !_tajweedEnabled),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: ItqanSpacing.md),
             child: Text(
               surah.nameArabic,
-              style: const TextStyle(
-                fontFamily: 'NotoNaskhArabic',
-                fontSize: 20,
-                color: ItqanColors.gold,
-              ),
+              style: const TextStyle(fontFamily: 'NotoNaskhArabic', fontSize: 20, color: ItqanColors.gold),
               textDirection: TextDirection.rtl,
             ),
           ),
@@ -189,17 +205,19 @@ class _AyahListScreen extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: ItqanSpacing.sm),
-                    Text(
-                      ayah.textUthmani,
-                      style: const TextStyle(
-                        fontFamily: 'NotoNaskhArabic',
-                        fontSize: 22,
-                        height: 2.0,
-                        color: ItqanColors.snow,
-                      ),
-                      textAlign: TextAlign.right,
-                      textDirection: TextDirection.rtl,
-                    ),
+                    _tajweedEnabled
+                        ? _TajweedAyahText(surahNum: surah.number, ayah: ayah)
+                        : Text(
+                            ayah.textUthmani,
+                            style: const TextStyle(
+                              fontFamily: 'NotoNaskhArabic',
+                              fontSize: 22,
+                              height: 2.0,
+                              color: ItqanColors.snow,
+                            ),
+                            textAlign: TextAlign.right,
+                            textDirection: TextDirection.rtl,
+                          ),
                     if (ayah.translation.isNotEmpty) ...[
                       const SizedBox(height: ItqanSpacing.sm),
                       Text(
@@ -216,6 +234,48 @@ class _AyahListScreen extends ConsumerWidget {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+
+class _TajweedAyahText extends StatelessWidget {
+  final int surahNum;
+  final Ayah ayah;
+  const _TajweedAyahText({required this.surahNum, required this.ayah});
+
+  @override
+  Widget build(BuildContext context) {
+    final words = ayah.textUthmani.split(' ');
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Wrap(
+        spacing: 4,
+        runSpacing: 4,
+        children: words.asMap().entries.map((entry) {
+          final word = entry.value;
+          final key = '\$surahNum:\${ayah.ayahNumber}:\${entry.key}';
+          final rule = tajweedAnnotations[key];
+          return Container(
+            padding: rule != null ? const EdgeInsets.symmetric(horizontal: 3, vertical: 1) : EdgeInsets.zero,
+            decoration: rule != null
+                ? BoxDecoration(
+                    color: tajweedColor(rule).withOpacity(0.25),
+                    borderRadius: BorderRadius.circular(4),
+                  )
+                : null,
+            child: Text(
+              word,
+              style: TextStyle(
+                fontFamily: 'NotoNaskhArabic',
+                fontSize: 22,
+                height: 2.0,
+                color: rule != null ? tajweedColor(rule) : ItqanColors.snow,
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
