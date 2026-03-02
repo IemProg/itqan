@@ -75,7 +75,30 @@
 
 ## 📸 لقطات الشاشة
 
-> **قريبًا / Coming soon** — التطبيق قيد التطوير النشط. تابعنا للحصول على أول نظرة!
+<div align="center">
+<table>
+<tr>
+<td align="center"><strong>الرئيسية</strong></td>
+<td align="center"><strong>التلاوة</strong></td>
+<td align="center"><strong>النتيجة</strong></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/home.png" width="250"/></td>
+<td><img src="assets/screenshots/recitation.png" width="250"/></td>
+<td><img src="assets/screenshots/results.png" width="250"/></td>
+</tr>
+<tr>
+<td align="center"><strong>المصحف</strong></td>
+<td align="center"><strong>التقدم</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/mushaf.png" width="250"/></td>
+<td><img src="assets/screenshots/progress.png" width="250"/></td>
+<td></td>
+</tr>
+</table>
+</div>
 
 ---
 
@@ -232,7 +255,30 @@ overall = word_accuracy×0.25 + phoneme_accuracy×0.25 + tashkeel×0.20 + tajwee
 
 ## 📸 Screenshots
 
-> **Coming soon** — App is in active development. ⭐ Star the repo to get notified on first release!
+<div align="center">
+<table>
+<tr>
+<td align="center"><strong>Home</strong></td>
+<td align="center"><strong>Recitation</strong></td>
+<td align="center"><strong>Results</strong></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/home.png" width="250"/></td>
+<td><img src="assets/screenshots/recitation.png" width="250"/></td>
+<td><img src="assets/screenshots/results.png" width="250"/></td>
+</tr>
+<tr>
+<td align="center"><strong>Mushaf</strong></td>
+<td align="center"><strong>Progress</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/mushaf.png" width="250"/></td>
+<td><img src="assets/screenshots/progress.png" width="250"/></td>
+<td></td>
+</tr>
+</table>
+</div>
 
 ---
 
