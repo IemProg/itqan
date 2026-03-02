@@ -149,15 +149,15 @@ String relativeTimestamp(DateTime dateTime) {
   if (diff.inSeconds < 60) return 'just now';
   if (diff.inMinutes < 60) {
     final m = diff.inMinutes;
-    return '\$m minutes ago';
+    return '$m minutes ago';
   }
   if (diff.inHours < 24) {
     final h = diff.inHours;
-    return '\$h hours ago';
+    return '$h hours ago';
   }
   if (diff.inHours < 48) return 'yesterday';
   final d = diff.inDays;
-  return '\$d days ago';
+  return '$d days ago';
 }
 
 // Localized version — requires BuildContext (available in widget build methods)

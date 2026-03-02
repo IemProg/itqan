@@ -21,8 +21,8 @@ void main() {
       expect(settings.theme, equals('dark'));
     });
 
-    test('default language is english', () {
-      expect(settings.language, equals('english'));
+    test('default language is arabic', () {
+      expect(settings.language, equals('arabic'));
     });
 
     test('default qari is alafasy', () {
