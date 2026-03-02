@@ -9,6 +9,9 @@ import '../settings/settings_screen.dart';
 import '../settings/settings_service.dart';
 import '../quran/services/quran_service.dart';
 import '../recitation/recitation_screen.dart';
+import '../mushaf/mushaf_page_screen.dart';
+import '../mushaf/providers/reading_position_provider.dart';
+import '../mushaf/services/reading_position_service.dart';
 
 // Index provider for bottom nav
 final _navIndexProvider = StateProvider<int>((ref) => 0);
@@ -23,7 +26,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: ItqanColors.void_,
       body: IndexedStack(
-        index: navIndex == 2 ? 0 : navIndex, // center tab keeps home visible
+        index: navIndex == 2 ? 0 : navIndex,
         children: [
           const _HomeBody(),
           const SurahBrowserScreen(),
@@ -42,7 +45,7 @@ class HomeScreen extends ConsumerWidget {
             children: [
               _NavItem(icon: Icons.home_rounded, label: 'Home', index: 0, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
               _NavItem(icon: Icons.menu_book_rounded, label: 'Quran', index: 1, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
-              const SizedBox(width: 72), // notch spacer
+              const SizedBox(width: 72),
               _NavItem(icon: Icons.bar_chart_rounded, label: 'Progress', index: 3, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
               _NavItem(icon: Icons.settings_rounded, label: 'Settings', index: 4, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
             ],
@@ -147,6 +150,10 @@ class _HomeBody extends ConsumerWidget {
                 const SizedBox(height: ItqanSpacing.xs),
                 const Text('Perfect your recitation, one ayah at a time.', style: ItqanTypography.body, textAlign: TextAlign.center),
                 const SizedBox(height: ItqanSpacing.xl),
+                // Mushaf "Continue Reading" card
+                const _MushafContinueCard(),
+                const SizedBox(height: ItqanSpacing.md),
+                // Recitation continue card
                 _ContinueCard(
                   onTap: () async {
                     final prefs = ref.read(userPreferencesProvider);
@@ -201,6 +208,181 @@ class _HomeBody extends ConsumerWidget {
     );
   }
 }
+
+// ─── Mushaf Continue Reading Card ─────────────────────────────────────────────
+
+class _MushafContinueCard extends ConsumerWidget {
+  const _MushafContinueCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final lastPositionAsync = ref.watch(lastReadingPositionProvider);
+
+    return lastPositionAsync.when(
+      loading: () => const SizedBox.shrink(),
+      error: (_, __) => const SizedBox.shrink(),
+      data: (position) {
+        if (position == null) {
+          // First time — show start card
+          return _MushafStartCard();
+        }
+        return _MushafResumeCard(position: position);
+      },
+    );
+  }
+}
+
+class _MushafStartCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(ItqanSpacing.lg),
+      decoration: BoxDecoration(
+        color: ItqanColors.onyx,
+        borderRadius: BorderRadius.circular(ItqanRadius.lg),
+        border: Border.all(color: ItqanColors.goldGlow, width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.auto_stories_rounded, color: ItqanColors.gold, size: 20),
+              const SizedBox(width: 8),
+              const Text('Read the Mushaf', style: ItqanTypography.label),
+            ],
+          ),
+          const SizedBox(height: ItqanSpacing.sm),
+          const Text(
+            'Start with Al-Fatiha',
+            style: TextStyle(color: ItqanColors.mist, fontSize: 13),
+          ),
+          const SizedBox(height: ItqanSpacing.md),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ItqanColors.gold,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MushafPageScreen(startPage: 1)),
+                );
+              },
+              child: const Text(
+                'Open Mushaf  ١',
+                style: TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MushafResumeCard extends StatelessWidget {
+  final ReadingPosition position;
+  const _MushafResumeCard({required this.position});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(ItqanSpacing.lg),
+      decoration: BoxDecoration(
+        color: ItqanColors.onyx,
+        borderRadius: BorderRadius.circular(ItqanRadius.lg),
+        border: Border.all(color: ItqanColors.goldGlow, width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.auto_stories_rounded, color: ItqanColors.gold, size: 20),
+              const SizedBox(width: 8),
+              const Text('Continue Reading', style: ItqanTypography.label),
+              const Spacer(),
+              Text(
+                relativeTimestamp(position.savedAt),
+                style: const TextStyle(color: ItqanColors.slate, fontSize: 11),
+              ),
+            ],
+          ),
+          const SizedBox(height: ItqanSpacing.sm),
+          if (position.surahNameArabic.isNotEmpty)
+            Text(
+              position.surahNameArabic,
+              style: const TextStyle(
+                fontFamily: 'NotoNaskhArabic',
+                fontSize: 20,
+                color: ItqanColors.goldLight,
+                height: 1.8,
+              ),
+              textDirection: TextDirection.rtl,
+            ),
+          Text(
+            '${position.surahNameSimple} · Ayah ${position.ayahNumber} · Page ${position.pageNumber}',
+            style: const TextStyle(color: ItqanColors.mist, fontSize: 13),
+          ),
+          const SizedBox(height: ItqanSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ItqanColors.gold,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MushafPageScreen(startPage: position.pageNumber),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Continue →',
+                    style: TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+              const SizedBox(width: ItqanSpacing.sm),
+              Expanded(
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side: const BorderSide(color: ItqanColors.charcoal),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const MushafPageScreen(startPage: 1),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Start from ١',
+                    style: TextStyle(color: ItqanColors.mist, fontSize: 13),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Recitation Continue Card ─────────────────────────────────────────────────
 
 class _ContinueCard extends StatelessWidget {
   final VoidCallback onTap;

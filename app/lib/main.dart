@@ -11,6 +11,7 @@ void main() async {
   // Open all boxes
   await Hive.openBox('settings');
   await Hive.openBox('sessions');
+  await Hive.openBox('reading_positions');
 
   final onboardingDone = Hive.box('settings').get('onboarding_done', defaultValue: false) as bool;
 

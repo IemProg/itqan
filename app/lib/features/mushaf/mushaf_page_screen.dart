@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/colors.dart';
@@ -6,6 +7,8 @@ import '../quran/models/ayah.dart';
 import '../quran/services/quran_service.dart';
 import '../recitation/recitation_screen.dart';
 import 'mushaf_screen.dart'; // quranServiceProvider, surahsProvider
+import 'providers/reading_position_provider.dart';
+import 'services/reading_position_service.dart';
 
 // ─── Providers ───────────────────────────────────────────────────────────────
 
@@ -34,18 +37,25 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
   late int _currentPage;
   bool _showTranslation = false;
 
+  // Auto-save debounce
+  Timer? _saveDebounce;
+  int _lastSavedPage = -1;
+
+  // Bookmark state
+  bool _isBookmarked = false;
+
   @override
   void initState() {
     super.initState();
     _currentPage = widget.startPage.clamp(1, 604);
-    // PageView index = page - 1. reverse:true means index 0 = page 1 on the right.
     _pageController = PageController(initialPage: _currentPage - 1);
-    // Pre-cache adjacent pages
     _precache(_currentPage);
+    _checkBookmarkState(_currentPage);
   }
 
   @override
   void dispose() {
+    _saveDebounce?.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -61,6 +71,122 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
     setState(() => _currentPage = p);
     _pageController.jumpToPage(p - 1);
     _precache(p);
+    _checkBookmarkState(p);
+  }
+
+  void _onPageChanged(int index) {
+    final page = index + 1;
+    setState(() => _currentPage = page);
+    _precache(page);
+    _checkBookmarkState(page);
+    _scheduleSave(page);
+  }
+
+  void _scheduleSave(int page) {
+    _saveDebounce?.cancel();
+    _saveDebounce = Timer(const Duration(milliseconds: 500), () {
+      if (page == _lastSavedPage) return;
+      _lastSavedPage = page;
+      final pageAsync = ref.read(_pageDataProvider(page));
+      pageAsync.whenData((pd) {
+        int surahNum = pd.verses.isNotEmpty ? pd.verses.first.surahNumber : 1;
+        int ayahNum = pd.verses.isNotEmpty ? pd.verses.first.ayahNumber : 1;
+        String surahNameSimple = 'Page $page';
+        String surahNameArabic = '';
+
+        final surahsAsync = ref.read(surahsProvider);
+        surahsAsync.whenData((surahs) {
+          final found = surahs.where((s) => s.number == surahNum);
+          if (found.isNotEmpty) {
+            surahNameSimple = found.first.nameSimple;
+            surahNameArabic = found.first.nameArabic;
+          }
+        });
+
+        ref.read(readingPositionServiceProvider).saveLastPosition(
+          ReadingPosition(
+            pageNumber: page,
+            surahNumber: surahNum,
+            ayahNumber: ayahNum,
+            surahNameSimple: surahNameSimple,
+            surahNameArabic: surahNameArabic,
+            savedAt: DateTime.now(),
+          ),
+        );
+
+        // Invalidate the last reading position provider so home screen updates
+        ref.invalidate(lastReadingPositionProvider);
+      });
+    });
+  }
+
+  void _checkBookmarkState(int page) {
+    ref.read(readingPositionServiceProvider).isPageBookmarked(page).then((v) {
+      if (mounted) setState(() => _isBookmarked = v);
+    });
+  }
+
+  void _toggleBookmark() async {
+    final pageAsync = ref.read(_pageDataProvider(_currentPage));
+    pageAsync.whenData((pd) async {
+      int surahNum = pd.verses.isNotEmpty ? pd.verses.first.surahNumber : 1;
+      int ayahNum = pd.verses.isNotEmpty ? pd.verses.first.ayahNumber : 1;
+      String surahNameSimple = 'Page $_currentPage';
+      String surahNameArabic = '';
+
+      final surahsAsync = ref.read(surahsProvider);
+      surahsAsync.whenData((surahs) {
+        final found = surahs.where((s) => s.number == surahNum);
+        if (found.isNotEmpty) {
+          surahNameSimple = found.first.nameSimple;
+          surahNameArabic = found.first.nameArabic;
+        }
+      });
+
+      if (_isBookmarked) {
+        // Remove bookmark
+        final bm = await ref
+            .read(readingPositionServiceProvider)
+            .getBookmarkForPage(_currentPage);
+        if (bm != null) {
+          await ref.read(bookmarksProvider.notifier).remove(bm.id);
+        }
+        setState(() => _isBookmarked = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Bookmark removed'),
+              duration: Duration(seconds: 2),
+              backgroundColor: ItqanColors.charcoal,
+            ),
+          );
+        }
+      } else {
+        // Add bookmark
+        final position = ReadingPosition(
+          pageNumber: _currentPage,
+          surahNumber: surahNum,
+          ayahNumber: ayahNum,
+          surahNameSimple: surahNameSimple,
+          surahNameArabic: surahNameArabic,
+          savedAt: DateTime.now(),
+        );
+        await ref.read(bookmarksProvider.notifier).add(position);
+        setState(() => _isBookmarked = true);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text(
+                'Bookmark saved ✓',
+                style: TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w600),
+              ),
+              duration: const Duration(seconds: 2),
+              backgroundColor: ItqanColors.gold,
+            ),
+          );
+        }
+      }
+    });
   }
 
   void _showJumpDialog() {
@@ -161,16 +287,37 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                     surahName,
                     style: const TextStyle(color: ItqanColors.cloud, fontSize: 12, fontWeight: FontWeight.w600),
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.translate_rounded,
-                      color: _showTranslation ? ItqanColors.gold : ItqanColors.mist,
-                      size: 18,
-                    ),
-                    onPressed: () => setState(() => _showTranslation = !_showTranslation),
-                    tooltip: 'Translation',
-                    visualDensity: VisualDensity.compact,
-                    padding: EdgeInsets.zero,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Bookmark button
+                      IconButton(
+                        icon: Icon(
+                          _isBookmarked
+                              ? Icons.bookmark_rounded
+                              : Icons.bookmark_border_rounded,
+                          color: _isBookmarked ? ItqanColors.gold : ItqanColors.mist,
+                          size: 18,
+                        ),
+                        onPressed: _toggleBookmark,
+                        tooltip: _isBookmarked ? 'Remove bookmark' : 'Add bookmark',
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
+                      ),
+                      const SizedBox(width: 4),
+                      // Translation toggle
+                      IconButton(
+                        icon: Icon(
+                          Icons.translate_rounded,
+                          color: _showTranslation ? ItqanColors.gold : ItqanColors.mist,
+                          size: 18,
+                        ),
+                        onPressed: () => setState(() => _showTranslation = !_showTranslation),
+                        tooltip: 'Translation',
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -182,10 +329,7 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                 controller: _pageController,
                 reverse: true, // RTL: right page = earlier
                 itemCount: 604,
-                onPageChanged: (index) {
-                  setState(() => _currentPage = index + 1);
-                  _precache(index + 1);
-                },
+                onPageChanged: _onPageChanged,
                 itemBuilder: (context, index) {
                   final page = index + 1;
                   return _MushafPage(
@@ -206,7 +350,6 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Previous page (in RTL, this is "right" = lower number)
                   _NavArrow(
                     icon: Icons.arrow_back_ios_rounded,
                     enabled: _currentPage > 1,
@@ -232,7 +375,6 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                       ],
                     ),
                   ),
-                  // Next page
                   _NavArrow(
                     icon: Icons.arrow_forward_ios_rounded,
                     enabled: _currentPage < 604,
@@ -306,13 +448,11 @@ class _MushafPage extends ConsumerWidget {
           return Center(child: Text('Page $pageNumber', style: ItqanTypography.caption));
         }
 
-        // Build a list of widgets: surah banners + continuous text blocks
         final surahMap = surahsAsync.maybeWhen(
           data: (list) => {for (final s in list) s.number: s},
           orElse: () => <int, Surah>{},
         );
 
-        // Group verses by surah (preserving order)
         final groups = <_SurahGroup>[];
         for (final verse in pageData.verses) {
           if (groups.isEmpty || groups.last.surahNumber != verse.surahNumber) {
@@ -327,14 +467,12 @@ class _MushafPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               for (final group in groups) ...[
-                // Surah banner only when it's the FIRST ayah of the surah on this page
                 if (group.verses.first.isFirstOfSurah) ...[
                   _SurahBanner(
                     surah: surahMap[group.surahNumber],
                     surahNumber: group.surahNumber,
                   ),
                 ],
-                // Continuous Arabic text block for this group
                 _VerseBlock(
                   verses: group.verses,
                   showTranslation: showTranslation,
@@ -400,7 +538,6 @@ class _SurahBanner extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ],
-          // Bismillah for all surahs except Al-Fatiha (1) and At-Tawbah (9)
           if (surahNumber != 9 && surahNumber != 1) ...[
             const SizedBox(height: 12),
             const Text(
@@ -421,7 +558,7 @@ class _SurahBanner extends StatelessWidget {
   }
 }
 
-// ─── Verse Block (continuous Arabic text) ────────────────────────────────────
+// ─── Verse Block ─────────────────────────────────────────────────────────────
 
 class _VerseBlock extends ConsumerWidget {
   final List<VerseOnPage> verses;
@@ -429,7 +566,6 @@ class _VerseBlock extends ConsumerWidget {
 
   const _VerseBlock({required this.verses, required this.showTranslation});
 
-  /// Convert an integer to Arabic-Indic numerals
   String _toArabicNumerals(int n) {
     const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     return n.toString().split('').map((c) {
@@ -440,11 +576,9 @@ class _VerseBlock extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Build one big RichText with all verses flowing together
     final spans = <InlineSpan>[];
 
     for (final verse in verses) {
-      // Append verse text
       spans.add(TextSpan(
         text: verse.textUthmani,
         style: const TextStyle(
@@ -454,8 +588,6 @@ class _VerseBlock extends ConsumerWidget {
           color: ItqanColors.snow,
         ),
       ));
-
-      // Append ayah end marker ۝ + Arabic-Indic number
       spans.add(TextSpan(
         text: ' \u06DD${_toArabicNumerals(verse.ayahNumber)} ',
         style: const TextStyle(
@@ -468,7 +600,6 @@ class _VerseBlock extends ConsumerWidget {
     }
 
     final column = <Widget>[
-      // Long press wrapping for word translation
       GestureDetector(
         onLongPressStart: (details) => _showWordSheet(context, ref, details),
         child: Directionality(
@@ -481,7 +612,6 @@ class _VerseBlock extends ConsumerWidget {
       ),
     ];
 
-    // Optional translations
     if (showTranslation) {
       for (final verse in verses) {
         if (verse.translation.isNotEmpty) {
@@ -514,7 +644,6 @@ class _VerseBlock extends ConsumerWidget {
   }
 
   void _showWordSheet(BuildContext context, WidgetRef ref, LongPressStartDetails details) {
-    // Find which verse was pressed (approximate — show first verse's info)
     if (verses.isEmpty) return;
     final verse = verses.first;
 
@@ -588,7 +717,6 @@ class _WordDetailSheet extends ConsumerWidget {
               ),
               onPressed: () async {
                 Navigator.pop(context);
-                // Load the full ayah for recitation
                 final service = ref.read(quranServiceProvider);
                 await service.init();
                 final ayahs = await service.getAyahs(verse.surahNumber);

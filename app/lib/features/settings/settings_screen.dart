@@ -4,6 +4,7 @@ import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
 import '../../core/theme/typography.dart';
 import 'settings_service.dart';
+import '../mushaf/bookmarks_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -110,6 +111,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
             ),
             const SizedBox(height: ItqanSpacing.md),
+            _TileRow(
+              label: 'Bookmarks',
+              icon: Icons.bookmark_rounded,
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BookmarksScreen())),
+            ),
+            const SizedBox(height: ItqanSpacing.sm),
             _SwitchRow(
               label: 'Tajweed Color Overlay',
               value: s.tajweedOverlay,
@@ -360,4 +367,27 @@ class _ScoringWeightsTable extends StatelessWidget {
       )).toList(),
     );
   }
+}
+
+class _TileRow extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  const _TileRow({required this.label, required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, color: ItqanColors.gold, size: 18),
+          const SizedBox(width: 10),
+          Expanded(child: Text(label, style: ItqanTypography.body)),
+          const Icon(Icons.arrow_forward_ios_rounded, color: ItqanColors.mist, size: 14),
+        ],
+      ),
+    ),
+  );
 }
