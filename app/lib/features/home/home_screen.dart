@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
 import '../../core/theme/typography.dart';
-import '../mushaf/mushaf_screen.dart';
+import '../surah_browser/surah_browser_screen.dart';
 import '../progress/progress_screen.dart';
 import '../settings/settings_screen.dart';
 import '../settings/settings_service.dart';
@@ -26,7 +26,7 @@ class HomeScreen extends ConsumerWidget {
         index: navIndex == 2 ? 0 : navIndex, // center tab keeps home visible
         children: [
           const _HomeBody(),
-          const MushafScreen(),
+          const SurahBrowserScreen(),
           const ProgressScreen(),
           const SettingsScreen(),
         ],
