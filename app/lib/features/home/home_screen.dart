@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
 import '../../core/theme/typography.dart';
@@ -22,6 +24,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final navIndex = ref.watch(_navIndexProvider);
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: ItqanColors.void_,
@@ -43,11 +46,11 @@ class HomeScreen extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _NavItem(icon: Icons.home_rounded, label: 'Home', index: 0, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
-              _NavItem(icon: Icons.menu_book_rounded, label: 'Quran', index: 1, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
+              _NavItem(icon: Icons.home_rounded, label: l10n.navHome, index: 0, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
+              _NavItem(icon: Icons.menu_book_rounded, label: l10n.navQuran, index: 1, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
               const SizedBox(width: 72),
-              _NavItem(icon: Icons.bar_chart_rounded, label: 'Progress', index: 3, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
-              _NavItem(icon: Icons.settings_rounded, label: 'Settings', index: 4, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
+              _NavItem(icon: Icons.bar_chart_rounded, label: l10n.navProgress, index: 3, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
+              _NavItem(icon: Icons.settings_rounded, label: l10n.navSettings, index: 4, current: navIndex, onTap: (i) => ref.read(_navIndexProvider.notifier).state = i),
             ],
           ),
         ),
@@ -133,6 +136,8 @@ class _HomeBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+
     return SafeArea(
       child: CustomScrollView(
         slivers: [
@@ -141,14 +146,14 @@ class _HomeBody extends ConsumerWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 const SizedBox(height: ItqanSpacing.md),
-                const Text(
-                  'السلام عليكم',
-                  style: TextStyle(fontFamily: 'NotoNaskhArabic', fontSize: 28, color: ItqanColors.gold, height: 1.5),
+                Text(
+                  l10n.homeGreeting,
+                  style: const TextStyle(fontFamily: 'NotoNaskhArabic', fontSize: 28, color: ItqanColors.gold, height: 1.5),
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,
                 ),
                 const SizedBox(height: ItqanSpacing.xs),
-                const Text('Perfect your recitation, one ayah at a time.', style: ItqanTypography.body, textAlign: TextAlign.center),
+                Text(l10n.homeSubtitle, style: ItqanTypography.body, textAlign: TextAlign.center),
                 const SizedBox(height: ItqanSpacing.xl),
                 // Mushaf "Continue Reading" card
                 const _MushafContinueCard(),
@@ -171,7 +176,7 @@ class _HomeBody extends ConsumerWidget {
                   },
                 ),
                 const SizedBox(height: ItqanSpacing.lg),
-                const Text('Practice', style: ItqanTypography.label),
+                Text(l10n.homePracticeMode, style: ItqanTypography.label),
                 const SizedBox(height: ItqanSpacing.md),
                 GridView.count(
                   crossAxisCount: 2,
@@ -182,19 +187,27 @@ class _HomeBody extends ConsumerWidget {
                   childAspectRatio: 1.4,
                   children: [
                     _ActionCard(
-                      icon: Icons.menu_book_rounded, label: 'Read', subtitle: 'Browse Quran',
+                      icon: Icons.menu_book_rounded,
+                      label: l10n.homeReadMode,
+                      subtitle: l10n.quranTitle,
                       onTap: () => ref.read(_navIndexProvider.notifier).state = 1,
                     ),
                     _ActionCard(
-                      icon: Icons.psychology_rounded, label: 'Memorize', subtitle: 'Hifz mode',
+                      icon: Icons.psychology_rounded,
+                      label: l10n.homePracticeMode,
+                      subtitle: 'Hifz',
                       onTap: () => ref.read(_navIndexProvider.notifier).state = 1,
                     ),
                     _ActionCard(
-                      icon: Icons.headphones_rounded, label: 'Listen', subtitle: 'Qari audio',
+                      icon: Icons.headphones_rounded,
+                      label: l10n.homeListenMode,
+                      subtitle: l10n.settingsQari,
                       onTap: () => ref.read(_navIndexProvider.notifier).state = 1,
                     ),
                     _ActionCard(
-                      icon: Icons.bar_chart_rounded, label: 'Progress', subtitle: 'Your stats',
+                      icon: Icons.bar_chart_rounded,
+                      label: l10n.homeProgressMode,
+                      subtitle: l10n.progressWeeklySummary,
                       onTap: () => ref.read(_navIndexProvider.notifier).state = 3,
                     ),
                   ],
@@ -223,7 +236,6 @@ class _MushafContinueCard extends ConsumerWidget {
       error: (_, __) => const SizedBox.shrink(),
       data: (position) {
         if (position == null) {
-          // First time — show start card
           return _MushafStartCard();
         }
         return _MushafResumeCard(position: position);
@@ -235,6 +247,7 @@ class _MushafContinueCard extends ConsumerWidget {
 class _MushafStartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       padding: const EdgeInsets.all(ItqanSpacing.lg),
       decoration: BoxDecoration(
@@ -249,13 +262,13 @@ class _MushafStartCard extends StatelessWidget {
             children: [
               const Icon(Icons.auto_stories_rounded, color: ItqanColors.gold, size: 20),
               const SizedBox(width: 8),
-              const Text('Read the Mushaf', style: ItqanTypography.label),
+              Text(l10n.homeContinueReading, style: ItqanTypography.label),
             ],
           ),
           const SizedBox(height: ItqanSpacing.sm),
-          const Text(
-            'Start with Al-Fatiha',
-            style: TextStyle(color: ItqanColors.mist, fontSize: 13),
+          Text(
+            l10n.homeStartReading,
+            style: const TextStyle(color: ItqanColors.mist, fontSize: 13),
           ),
           const SizedBox(height: ItqanSpacing.md),
           SizedBox(
@@ -272,9 +285,9 @@ class _MushafStartCard extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const MushafPageScreen(startPage: 1)),
                 );
               },
-              child: const Text(
-                'Open Mushaf  ١',
-                style: TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700),
+              child: Text(
+                l10n.homeStartFromBeginning,
+                style: const TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700),
               ),
             ),
           ),
@@ -290,6 +303,7 @@ class _MushafResumeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       padding: const EdgeInsets.all(ItqanSpacing.lg),
       decoration: BoxDecoration(
@@ -304,10 +318,10 @@ class _MushafResumeCard extends StatelessWidget {
             children: [
               const Icon(Icons.auto_stories_rounded, color: ItqanColors.gold, size: 20),
               const SizedBox(width: 8),
-              const Text('Continue Reading', style: ItqanTypography.label),
+              Text(l10n.homeContinueReading, style: ItqanTypography.label),
               const Spacer(),
               Text(
-                relativeTimestamp(position.savedAt),
+                localizedRelativeTimestamp(context, position.savedAt),
                 style: const TextStyle(color: ItqanColors.slate, fontSize: 11),
               ),
             ],
@@ -346,9 +360,9 @@ class _MushafResumeCard extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text(
-                    'Continue →',
-                    style: TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700),
+                  child: Text(
+                    l10n.homeContinueBtn,
+                    style: const TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700),
                   ),
                 ),
               ),
@@ -368,9 +382,9 @@ class _MushafResumeCard extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text(
-                    'Start from ١',
-                    style: TextStyle(color: ItqanColors.mist, fontSize: 13),
+                  child: Text(
+                    l10n.homeStartFromBeginning,
+                    style: const TextStyle(color: ItqanColors.mist, fontSize: 13),
                   ),
                 ),
               ),
@@ -390,6 +404,7 @@ class _ContinueCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -411,13 +426,13 @@ class _ContinueCard extends StatelessWidget {
               child: const Icon(Icons.play_arrow_rounded, color: ItqanColors.gold, size: 28),
             ),
             const SizedBox(width: ItqanSpacing.md),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Continue Recitation', style: ItqanTypography.label),
-                  SizedBox(height: 2),
-                  Text('Pick up where you left off', style: ItqanTypography.caption),
+                  Text(l10n.homeContinueReading, style: ItqanTypography.label),
+                  const SizedBox(height: 2),
+                  Text(l10n.homeLastRead, style: ItqanTypography.caption),
                 ],
               ),
             ),

@@ -149,13 +149,29 @@ String relativeTimestamp(DateTime dateTime) {
   if (diff.inSeconds < 60) return 'just now';
   if (diff.inMinutes < 60) {
     final m = diff.inMinutes;
-    return '$m minute${m == 1 ? '' : 's'} ago';
+    return '\$m minutes ago';
   }
   if (diff.inHours < 24) {
     final h = diff.inHours;
-    return '$h hour${h == 1 ? '' : 's'} ago';
+    return '\$h hours ago';
   }
   if (diff.inHours < 48) return 'yesterday';
   final d = diff.inDays;
-  return '$d day${d == 1 ? '' : 's'} ago';
+  return '\$d days ago';
+}
+
+// Localized version — requires BuildContext (available in widget build methods)
+String localizedRelativeTimestamp(dynamic context, DateTime dateTime) {
+  try {
+    // ignore: avoid_dynamic_calls
+    final l10n = context.l10n as dynamic;
+    final diff = DateTime.now().difference(dateTime);
+    if (diff.inSeconds < 60) return l10n.timeJustNow as String;
+    if (diff.inMinutes < 60) return (l10n.timeMinutesAgo(diff.inMinutes)) as String;
+    if (diff.inHours < 24) return (l10n.timeHoursAgo(diff.inHours)) as String;
+    if (diff.inHours < 48) return l10n.timeYesterday as String;
+    return (l10n.timeDaysAgo(diff.inDays)) as String;
+  } catch (_) {
+    return relativeTimestamp(dateTime);
+  }
 }

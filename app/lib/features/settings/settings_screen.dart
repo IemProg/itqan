@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
@@ -39,18 +41,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       backgroundColor: ItqanColors.void_,
       appBar: AppBar(
         backgroundColor: ItqanColors.void_,
-        title: const Text('Settings', style: ItqanTypography.heading2),
+        title: Text(AppLocalizations.of(context)!.settingsTitle, style: ItqanTypography.heading2),
       ),
       body: ListView(
         padding: const EdgeInsets.all(ItqanSpacing.lg),
         children: [
-          _sectionTitle('Profile'),
+          _sectionTitle(s, context.l10n.settingsProfile),
           _card([
             TextField(
               controller: _nameController,
               style: ItqanTypography.body,
-              decoration: const InputDecoration(
-                labelText: 'Your name',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.settingsName,
                 labelStyle: TextStyle(color: ItqanColors.mist),
                 enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: ItqanColors.charcoal)),
                 focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ItqanColors.gold)),
@@ -58,7 +60,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               onChanged: (v) => _update(s.copyWith(userName: v)),
             ),
             const SizedBox(height: ItqanSpacing.md),
-            const Text('Experience Level', style: ItqanTypography.caption),
+            Text(AppLocalizations.of(context)!.settingsLevel, style: ItqanTypography.caption),
             const SizedBox(height: ItqanSpacing.sm),
             _SegmentedPicker(
               options: const ['Beginner', 'Intermediate', 'Advanced'],
@@ -66,7 +68,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               onSelect: (v) => _update(s.copyWith(level: v.toLowerCase())),
             ),
             const SizedBox(height: ItqanSpacing.md),
-            const Text('Daily Goal', style: ItqanTypography.caption),
+            Text(AppLocalizations.of(context)!.settingsDailyGoal, style: ItqanTypography.caption),
             const SizedBox(height: ItqanSpacing.sm),
             _ChipPicker(
               options: const ['10 min', '20 min', '30 min'],
@@ -74,12 +76,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               onSelect: (v) => _update(s.copyWith(dailyGoalMinutes: int.parse(v.split(' ')[0]))),
             ),
           ]),
-          _sectionTitle('Quran Display'),
+          _sectionTitle(s, context.l10n.settingsQuranDisplay),
           _card([
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Script', style: ItqanTypography.body),
+                Text(AppLocalizations.of(context)!.settingsScript, style: ItqanTypography.body),
                 _SegmentedPicker(
                   options: const ['Uthmani', 'Indo-Pak'],
                   selected: s.quranicScript == 'uthmani' ? 'Uthmani' : 'Indo-Pak',
@@ -92,7 +94,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Font Size', style: ItqanTypography.caption),
+                Text(AppLocalizations.of(context)!.settingsFontSize, style: ItqanTypography.caption),
                 Text('${s.fontSize.round()}px', style: ItqanTypography.caption.copyWith(color: ItqanColors.gold)),
               ],
             ),
@@ -112,34 +114,34 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             const SizedBox(height: ItqanSpacing.md),
             _TileRow(
-              label: 'Bookmarks',
+              label: AppLocalizations.of(context)!.settingsBookmarks,
               icon: Icons.bookmark_rounded,
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BookmarksScreen())),
             ),
             const SizedBox(height: ItqanSpacing.sm),
             _SwitchRow(
-              label: 'Tajweed Color Overlay',
+              label: AppLocalizations.of(context)!.settingsTajweedColors,
               value: s.tajweedOverlay,
               onChanged: (v) => _update(s.copyWith(tajweedOverlay: v)),
             ),
             const SizedBox(height: ItqanSpacing.sm),
             _DropdownRow(
-              label: 'Translation',
+              label: AppLocalizations.of(context)!.settingsTranslationLanguage,
               value: s.translationLanguage,
               options: const {'english': 'English', 'french': 'French', 'arabic': 'Arabic Tafsir'},
               onChanged: (v) => _update(s.copyWith(translationLanguage: v)),
             ),
           ]),
-          _sectionTitle('Audio'),
+          _sectionTitle(s, context.l10n.settingsAudio),
           _card([
             _DropdownRow(
-              label: 'Default Qari',
+              label: AppLocalizations.of(context)!.settingsQari,
               value: s.defaultQari,
               options: const {'alafasy': 'Alafasy', 'abdulbasit': 'Abdul Basit', 'alhusary': 'Al-Husary'},
               onChanged: (v) => _update(s.copyWith(defaultQari: v)),
             ),
             const SizedBox(height: ItqanSpacing.md),
-            const Text('Playback Speed', style: ItqanTypography.caption),
+            Text(AppLocalizations.of(context)!.settingsPlaybackSpeed, style: ItqanTypography.caption),
             const SizedBox(height: ItqanSpacing.sm),
             _ChipPicker(
               options: const ['0.75×', '1.0×', '1.25×'],
@@ -147,9 +149,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               onSelect: (v) => _update(s.copyWith(playbackSpeed: double.parse(v.replaceAll('×', '')))),
             ),
           ]),
-          _sectionTitle('Scoring'),
+          _sectionTitle(s, context.l10n.settingsScoring),
           _card([
-            const Text('Difficulty', style: ItqanTypography.caption),
+            Text(AppLocalizations.of(context)!.settingsDifficulty, style: ItqanTypography.caption),
             const SizedBox(height: ItqanSpacing.sm),
             _SegmentedPicker(
               options: const ['Beginner', 'Intermediate', 'Advanced'],
@@ -159,31 +161,31 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: ItqanSpacing.md),
             _ScoringWeightsTable(level: s.scoringDifficulty),
           ]),
-          _sectionTitle('App'),
+          _sectionTitle(s, context.l10n.settingsApp),
           _card([
             _DropdownRow(
-              label: 'Theme',
+              label: AppLocalizations.of(context)!.settingsTheme,
               value: s.theme,
               options: const {'dark': 'Dark', 'light': 'Light (Soon)', 'system': 'System'},
               onChanged: (v) => _update(s.copyWith(theme: v)),
             ),
             const SizedBox(height: ItqanSpacing.sm),
             _DropdownRow(
-              label: 'Language',
+              label: AppLocalizations.of(context)!.settingsLanguage,
               value: s.language,
-              options: const {'english': 'English', 'french': 'Français', 'arabic': 'العربية'},
+              options: const {'arabic': 'العربية', 'english': 'English', 'french': 'Français'},
               onChanged: (v) => _update(s.copyWith(language: v)),
             ),
             const SizedBox(height: ItqanSpacing.sm),
             _SwitchRow(
-              label: 'Notifications',
+              label: AppLocalizations.of(context)!.settingsNotifications,
               value: s.notifications,
               onChanged: (v) => _update(s.copyWith(notifications: v)),
             ),
           ]),
-          _sectionTitle('About'),
+          _sectionTitle(s, context.l10n.settingsAbout),
           _card([
-            const _AboutRow(label: 'Version', value: '1.0.0'),
+            _AboutRow(label: AppLocalizations.of(context)!.settingsVersion, value: '1.0.0'),
             const SizedBox(height: ItqanSpacing.sm),
             OutlinedButton.icon(
               onPressed: () {},
@@ -192,10 +194,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               style: OutlinedButton.styleFrom(side: const BorderSide(color: ItqanColors.goldGlow)),
             ),
             const SizedBox(height: ItqanSpacing.sm),
-            const Text('Open Source — MIT License', style: ItqanTypography.caption),
+            Text(AppLocalizations.of(context)!.settingsOpenSource, style: ItqanTypography.caption),
             const SizedBox(height: ItqanSpacing.xs),
-            const Text(
-              'Built with Flutter • Quran data: quran.com • Audio: EveryAyah.com',
+            Text(
+              AppLocalizations.of(context)!.settingsCredits,
               style: ItqanTypography.caption,
             ),
           ]),
@@ -207,7 +209,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   String _capitalize(String s) => s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
 
-  Widget _sectionTitle(String title) => Padding(
+  Widget _sectionTitle(AppSettings s, String title) => Padding(
     padding: const EdgeInsets.only(top: ItqanSpacing.lg, bottom: ItqanSpacing.sm),
     child: Text(title.toUpperCase(), style: ItqanTypography.label.copyWith(color: ItqanColors.mist, fontSize: 11)),
   );

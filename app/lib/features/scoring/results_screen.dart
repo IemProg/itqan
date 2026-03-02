@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
 import '../../core/theme/typography.dart';
@@ -32,7 +34,7 @@ class ResultsScreen extends StatelessWidget {
       backgroundColor: ItqanColors.void_,
       appBar: AppBar(
         backgroundColor: ItqanColors.void_,
-        title: const Text('Recitation Score', style: ItqanTypography.heading2),
+        title: Text(AppLocalizations.of(context)!.resultsTitle, style: ItqanTypography.heading2),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -50,21 +52,21 @@ class ResultsScreen extends StatelessWidget {
               const SizedBox(height: ItqanSpacing.md),
               ScoreRing(score: result.overall, size: 180),
               const SizedBox(height: ItqanSpacing.xl),
-              _SectionHeader(title: 'Breakdown'),
+              _SectionHeader(title: AppLocalizations.of(context)!.resultsOverallScore),
               const SizedBox(height: ItqanSpacing.md),
-              _BreakdownBar(label: 'Word Accuracy', score: result.wordAccuracy),
-              _BreakdownBar(label: 'Letter Accuracy', score: result.letterAccuracy),
-              _BreakdownBar(label: 'Tajweed', score: result.tajweed),
-              _BreakdownBar(label: 'Fluency', score: result.fluency),
+              _BreakdownBar(label: AppLocalizations.of(context)!.resultsWordAccuracy, score: result.wordAccuracy),
+              _BreakdownBar(label: AppLocalizations.of(context)!.resultsLetterAccuracy, score: result.letterAccuracy),
+              _BreakdownBar(label: AppLocalizations.of(context)!.resultsTajweed, score: result.tajweed),
+              _BreakdownBar(label: AppLocalizations.of(context)!.resultsFluency, score: result.fluency),
               const SizedBox(height: ItqanSpacing.xl),
               if (result.wordScores.isNotEmpty) ...[
-                _SectionHeader(title: 'Word Analysis'),
+                _SectionHeader(title: AppLocalizations.of(context)!.resultsWordAccuracy),
                 const SizedBox(height: ItqanSpacing.md),
                 _WordAnalysis(wordScores: result.wordScores),
                 const SizedBox(height: ItqanSpacing.xl),
               ],
               if (mistakes.isNotEmpty) ...[
-                _SectionHeader(title: 'Corrections'),
+                _SectionHeader(title: AppLocalizations.of(context)!.resultsMistakeCards),
                 const SizedBox(height: ItqanSpacing.md),
                 ...mistakes.map((w) => _MistakeCard(wordScore: w)),
                 const SizedBox(height: ItqanSpacing.xl),
@@ -72,12 +74,12 @@ class ResultsScreen extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: GoldButton(label: 'Retry', icon: Icons.refresh_rounded, onPressed: onRetry),
+                    child: GoldButton(label: AppLocalizations.of(context)!.recitationRetry, icon: Icons.refresh_rounded, onPressed: onRetry),
                   ),
                   const SizedBox(width: ItqanSpacing.md),
                   Expanded(
                     child: GoldButton(
-                      label: 'Next Ayah',
+                      label: AppLocalizations.of(context)!.recitationNextAyah,
                       icon: Icons.arrow_forward_rounded,
                       onPressed: onNext,
                       secondary: true,
@@ -272,9 +274,9 @@ class _MistakeCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Correction needed',
-                  style: TextStyle(color: ItqanColors.error, fontSize: 12, fontWeight: FontWeight.w600),
+                Text(
+                  AppLocalizations.of(context)!.resultsNeedsWork,
+                  style: const TextStyle(color: ItqanColors.error, fontSize: 12, fontWeight: FontWeight.w600),
                 ),
                 Text(wordScore.error ?? '', style: ItqanTypography.caption),
               ],

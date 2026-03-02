@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../core/theme/colors.dart';
@@ -38,7 +40,7 @@ class ProgressScreen extends ConsumerWidget {
       backgroundColor: ItqanColors.void_,
       appBar: AppBar(
         backgroundColor: ItqanColors.void_,
-        title: const Text('Progress', style: ItqanTypography.heading1),
+        title: Text(AppLocalizations.of(context)!.progressTitle, style: ItqanTypography.heading1),
         automaticallyImplyLeading: false,
       ),
       body: sessions.isEmpty
@@ -98,10 +100,10 @@ class _EmptyState extends StatelessWidget {
       children: [
         const Text('🌙', style: TextStyle(fontSize: 64)),
         const SizedBox(height: ItqanSpacing.md),
-        const Text('Your journey begins here', style: ItqanTypography.heading2),
+        Text(AppLocalizations.of(context)!.progressNoData, style: ItqanTypography.heading2),
         const SizedBox(height: ItqanSpacing.sm),
         Text(
-          'Start reciting to see your progress\nand track your improvement.',
+          AppLocalizations.of(context)!.progressNoData,
           style: ItqanTypography.body.copyWith(color: ItqanColors.mist),
           textAlign: TextAlign.center,
         ),
@@ -128,14 +130,14 @@ class _WeeklySummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('This Week', style: ItqanTypography.label),
+          Text(AppLocalizations.of(context)!.progressWeeklySummary, style: ItqanTypography.label),
           const SizedBox(height: ItqanSpacing.md),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _Stat(label: 'Sessions', value: '$sessions'),
-              _Stat(label: 'Minutes', value: '$minutes'),
-              _Stat(label: 'Avg Score', value: '${avgScore.round()}'),
+              _Stat(label: AppLocalizations.of(context)!.progressSessions, value: '$sessions'),
+              _Stat(label: AppLocalizations.of(context)!.progressMinutes, value: '$minutes'),
+              _Stat(label: AppLocalizations.of(context)!.progressAvgScore, value: '${avgScore.round()}'),
             ],
           ),
           if (streak > 0) ...[
@@ -147,7 +149,7 @@ class _WeeklySummaryCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(ItqanRadius.full),
                 border: Border.all(color: ItqanColors.goldGlow),
               ),
-              child: Text('🔥 $streak day streak', style: const TextStyle(color: ItqanColors.gold, fontSize: 13, fontWeight: FontWeight.w600)),
+              child: Text('🔥 \${AppLocalizations.of(context)!.progressStreak(streak)}', style: const TextStyle(color: ItqanColors.gold, fontSize: 13, fontWeight: FontWeight.w600)),
             ),
           ],
         ],
@@ -199,7 +201,7 @@ class _ActivityHeatmap extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Activity', style: ItqanTypography.label),
+          Text(AppLocalizations.of(context)!.progressActivity, style: ItqanTypography.label),
           const SizedBox(height: ItqanSpacing.sm),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -262,7 +264,7 @@ class _SurahMastery extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Surahs Practiced', style: ItqanTypography.label),
+          Text(AppLocalizations.of(context)!.progressSurahsMastery, style: ItqanTypography.label),
           const SizedBox(height: ItqanSpacing.md),
           if (surahData.isEmpty)
             Text('No surahs practiced yet', style: ItqanTypography.caption.copyWith(color: ItqanColors.mist))
@@ -321,7 +323,7 @@ class _WeakSpots extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Focus Areas', style: ItqanTypography.label),
+          Text(AppLocalizations.of(context)!.progressFocusAreas, style: ItqanTypography.label),
           const SizedBox(height: ItqanSpacing.sm),
           if (spots.isEmpty)
             Text('Great work! No weak spots detected yet.', style: ItqanTypography.caption.copyWith(color: ItqanColors.correct))
@@ -349,7 +351,7 @@ class _WeakSpots extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       minimumSize: Size.zero,
                     ),
-                    child: const Text('Practice', style: TextStyle(color: ItqanColors.gold, fontSize: 12)),
+                    child: Text(AppLocalizations.of(context)!.quranPracticeBtn, style: const TextStyle(color: ItqanColors.gold, fontSize: 12)),
                   ),
                 ],
               ),
@@ -377,7 +379,7 @@ class _TajweedMastery extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Tajweed Mastery', style: ItqanTypography.label),
+          Text(AppLocalizations.of(context)!.progressTajweedMastery, style: ItqanTypography.label),
           const SizedBox(height: ItqanSpacing.md),
           ...rules.map((rule) => Padding(
             padding: const EdgeInsets.only(bottom: ItqanSpacing.sm),

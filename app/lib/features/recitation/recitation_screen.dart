@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
@@ -198,7 +200,7 @@ class _RecitationScreenState extends ConsumerState<RecitationScreen> {
                   // Listen button
                   _ControlButton(
                     icon: isPlaying ? Icons.stop_rounded : Icons.headphones_rounded,
-                    label: isPlaying ? 'Stop' : 'Listen',
+                    label: isPlaying ? AppLocalizations.of(context)!.recitationStop : AppLocalizations.of(context)!.recitationListenFirst,
                     color: isPlaying ? ItqanColors.error : ItqanColors.info,
                     onTap: notifier.listen,
                   ),
@@ -218,7 +220,7 @@ class _RecitationScreenState extends ConsumerState<RecitationScreen> {
                   // Retry / skip
                   _ControlButton(
                     icon: Icons.refresh_rounded,
-                    label: 'Reset',
+                    label: AppLocalizations.of(context)!.recitationRetry,
                     color: ItqanColors.mist,
                     onTap: notifier.retry,
                   ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/typography.dart';
@@ -92,15 +94,15 @@ class _SurahBrowserScreenState extends ConsumerState<SurahBrowserScreen>
       backgroundColor: ItqanColors.void_,
       appBar: AppBar(
         backgroundColor: ItqanColors.void_,
-        title: const Text('Quran', style: ItqanTypography.heading2),
+        title: Text(AppLocalizations.of(context)!.quranTitle, style: ItqanTypography.heading2),
         bottom: TabBar(
           controller: _tabController,
           labelColor: ItqanColors.gold,
           unselectedLabelColor: ItqanColors.mist,
           indicatorColor: ItqanColors.gold,
-          tabs: const [
-            Tab(text: 'Surahs'),
-            Tab(text: 'Juz'),
+          tabs: [
+            Tab(text: AppLocalizations.of(context)!.quranSurahsTab),
+            Tab(text: AppLocalizations.of(context)!.quranJuzTab),
           ],
         ),
       ),
@@ -142,11 +144,11 @@ class _SurahsTab extends ConsumerWidget {
           children: [
             const Icon(Icons.wifi_off_rounded, color: ItqanColors.mist, size: 48),
             const SizedBox(height: 16),
-            Text('Could not load surahs', style: ItqanTypography.body),
+            Text(AppLocalizations.of(context)!.errorLoadFailed, style: ItqanTypography.body),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => ref.refresh(surahsProvider),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context)!.errorRetry),
             ),
           ],
         ),
@@ -170,7 +172,7 @@ class _SurahsTab extends ConsumerWidget {
                 onChanged: onSearch,
                 style: const TextStyle(color: ItqanColors.snow, fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: 'Search by name or number…',
+                  hintText: AppLocalizations.of(context)!.quranSearchHint,
                   hintStyle: const TextStyle(color: ItqanColors.mist, fontSize: 14),
                   prefixIcon: const Icon(Icons.search_rounded, color: ItqanColors.mist, size: 20),
                   filled: true,
@@ -207,7 +209,8 @@ class _SurahRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final place = surah.revelationPlace == 'makkah' ? 'Al-Makkiyah' : 'Al-Madaniyah';
+    final l10n = AppLocalizations.of(context)!;
+    final place = surah.revelationPlace == 'makkah' ? l10n.quranMakki : l10n.quranMadani;
 
     return ListTile(
       onTap: () => _openMushaf(context),
@@ -261,14 +264,14 @@ class _SurahRow extends ConsumerWidget {
           _IconBtn(
             icon: Icons.menu_book_rounded,
             color: ItqanColors.gold,
-            tooltip: 'Read',
+            tooltip: AppLocalizations.of(context)!.quranReadBtn,
             onTap: () => _openMushaf(context),
           ),
           const SizedBox(width: 4),
           _IconBtn(
             icon: Icons.mic_rounded,
             color: ItqanColors.mist,
-            tooltip: 'Practice',
+            tooltip: AppLocalizations.of(context)!.quranPracticeBtn,
             onTap: () => _openPractice(context, ref),
           ),
         ],
@@ -371,7 +374,7 @@ class _JuzTab extends StatelessWidget {
               ),
             ),
           ),
-          title: Text('Juz $juzNum', style: ItqanTypography.label),
+          title: Text(AppLocalizations.of(context)!.quranJuzLabel(juzNum), style: ItqanTypography.label),
           subtitle: Text(
             '${juz['name']} : ${juz['ayah']}',
             style: ItqanTypography.caption,

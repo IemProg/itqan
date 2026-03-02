@@ -28,7 +28,7 @@ class AppSettings {
     this.playbackSpeed = 1.0,
     this.scoringDifficulty = 'beginner',
     this.theme = 'dark',
-    this.language = 'english',
+    this.language = 'arabic',
     this.notifications = true,
   });
 
@@ -85,7 +85,7 @@ class AppSettings {
     playbackSpeed: (map['playbackSpeed'] ?? 1.0).toDouble(),
     scoringDifficulty: map['scoringDifficulty'] ?? 'beginner',
     theme: map['theme'] ?? 'dark',
-    language: map['language'] ?? 'english',
+    language: map['language'] ?? 'arabic',
     notifications: map['notifications'] ?? true,
   );
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
+import '../../../features/mushaf/services/reading_position_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
@@ -20,7 +23,7 @@ class BookmarksScreen extends ConsumerWidget {
         backgroundColor: ItqanColors.void_,
         title: Row(
           children: [
-            const Text('Bookmarks', style: ItqanTypography.heading2),
+            Text(AppLocalizations.of(context)!.bookmarksTitle, style: ItqanTypography.heading2),
             if (bookmarks.isNotEmpty) ...[
               const SizedBox(width: 8),
               Container(
@@ -178,8 +181,8 @@ class _BookmarkTile extends ConsumerWidget {
                     ),
                   );
                 },
-                child: const Text('Go',
-                    style: TextStyle(color: ItqanColors.gold, fontSize: 12, fontWeight: FontWeight.w700)),
+                child: Text(AppLocalizations.of(context)!.mushafJumpConfirm,
+                    style: const TextStyle(color: ItqanColors.gold, fontSize: 12, fontWeight: FontWeight.w700)),
               ),
             ],
           ),

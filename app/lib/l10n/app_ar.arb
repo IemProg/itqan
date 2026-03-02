@@ -1,0 +1,163 @@
+{
+  "@@locale": "ar",
+
+  "appName": "إتقان",
+
+  "navHome": "الرئيسية",
+  "navQuran": "القرآن",
+  "navProgress": "التقدم",
+  "navSettings": "الإعدادات",
+
+  "homeGreeting": "السلام عليكم",
+  "homeSubtitle": "أهلاً بك في إتقان",
+  "homeContinueReading": "متابعة القراءة",
+  "homeStartReading": "ابدأ بالفاتحة",
+  "homeContinueBtn": "متابعة ←",
+  "homeStartFromBeginning": "من البداية ١",
+  "homeLastRead": "آخر قراءة",
+  "homePracticeMode": "وضع الممارسة",
+  "homeReadMode": "وضع القراءة",
+  "homeListenMode": "وضع الاستماع",
+  "homeProgressMode": "التقدم",
+
+  "quranTitle": "القرآن الكريم",
+  "quranSurahsTab": "السور",
+  "quranJuzTab": "الأجزاء",
+  "quranSearchHint": "ابحث عن سورة...",
+  "quranAyahCount": "{count} آيات",
+  "@quranAyahCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "quranMakki": "مكية",
+  "quranMadani": "مدنية",
+  "quranJuzLabel": "الجزء {number}",
+  "@quranJuzLabel": {
+    "placeholders": { "number": { "type": "int" } }
+  },
+  "quranReadBtn": "قراءة",
+  "quranPracticeBtn": "ممارسة",
+
+  "mushafPage": "صفحة {page}",
+  "@mushafPage": {
+    "placeholders": { "page": { "type": "int" } }
+  },
+  "mushafJuz": "الجزء {number}",
+  "@mushafJuz": {
+    "placeholders": { "number": { "type": "int" } }
+  },
+  "mushafBookmarkSaved": "تم حفظ الإشارة ✓",
+  "mushafBookmarkRemoved": "تمت إزالة الإشارة",
+  "mushafJumpToPage": "انتقل إلى صفحة",
+  "mushafJumpConfirm": "انتقال",
+  "mushafJumpCancel": "إلغاء",
+  "mushafTranslationToggle": "الترجمة",
+  "mushafTajweedToggle": "التجويد",
+
+  "recitationTitle": "التلاوة",
+  "recitationListenFirst": "استمع أولاً",
+  "recitationRecord": "سجّل",
+  "recitationStop": "إيقاف",
+  "recitationRetry": "إعادة المحاولة",
+  "recitationNextAyah": "الآية التالية ←",
+  "recitationRecording": "جارٍ التسجيل",
+  "recitationProcessing": "جارٍ التحليل...",
+
+  "resultsTitle": "النتائج",
+  "resultsOverallScore": "النتيجة الإجمالية",
+  "resultsWordAccuracy": "دقة الكلمات",
+  "resultsLetterAccuracy": "دقة الحروف",
+  "resultsTajweed": "التجويد",
+  "resultsFluency": "الطلاقة",
+  "resultsExcellent": "ممتاز! ما شاء الله",
+  "resultsGood": "أداء جيد! استمر",
+  "resultsNeedsWork": "هيا نتحسن معاً",
+  "resultsMistakeCards": "الأخطاء",
+  "resultsHearCorrect": "استمع للصحيح",
+  "resultsMyAudio": "تسجيلي",
+
+  "progressTitle": "التقدم",
+  "progressWeeklySummary": "ملخص الأسبوع",
+  "progressSessions": "جلسات",
+  "progressMinutes": "دقيقة",
+  "progressAvgScore": "متوسط النتيجة",
+  "progressStreak": "سلسلة {days} يوم",
+  "@progressStreak": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "progressActivity": "نشاطي",
+  "progressSurahsMastery": "إتقان السور",
+  "progressFocusAreas": "مجالات التحسين",
+  "progressNoData": "ابدأ التلاوة لرؤية تقدمك",
+  "progressTajweedMastery": "إتقان التجويد",
+
+  "settingsTitle": "الإعدادات",
+  "settingsProfile": "الملف الشخصي",
+  "settingsName": "الاسم",
+  "settingsLevel": "مستوى التلاوة",
+  "settingsLevelBeginner": "مبتدئ",
+  "settingsLevelIntermediate": "متوسط",
+  "settingsLevelAdvanced": "متقدم",
+  "settingsDailyGoal": "الهدف اليومي",
+  "settingsQuranDisplay": "عرض القرآن",
+  "settingsScript": "الرسم الإملائي",
+  "settingsFontSize": "حجم الخط",
+  "settingsTajweedColors": "ألوان التجويد",
+  "settingsTranslationLanguage": "لغة الترجمة",
+  "settingsAudio": "الصوت",
+  "settingsQari": "القارئ",
+  "settingsPlaybackSpeed": "سرعة التشغيل",
+  "settingsScoring": "التقييم",
+  "settingsDifficulty": "مستوى الصعوبة",
+  "settingsApp": "التطبيق",
+  "settingsTheme": "المظهر",
+  "settingsLanguage": "اللغة",
+  "settingsNotifications": "الإشعارات",
+  "settingsAbout": "حول التطبيق",
+  "settingsVersion": "الإصدار",
+  "settingsOpenSource": "مفتوح المصدر — رخصة MIT",
+  "settingsCredits": "مصادر البيانات: quran.com • EveryAyah.com",
+  "settingsBookmarks": "الإشارات المرجعية",
+
+  "bookmarksTitle": "الإشارات المرجعية",
+  "bookmarksEmpty": "لا توجد إشارات بعد",
+  "bookmarksEmptyHint": "اضغط ⊕ أثناء القراءة لحفظ موضعك",
+  "bookmarksPageLabel": "صفحة {page}",
+  "@bookmarksPageLabel": {
+    "placeholders": { "page": { "type": "int" } }
+  },
+
+  "timeJustNow": "الآن",
+  "timeMinutesAgo": "منذ {minutes} دقيقة",
+  "@timeMinutesAgo": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "timeHoursAgo": "منذ {hours} ساعة",
+  "@timeHoursAgo": {
+    "placeholders": { "hours": { "type": "int" } }
+  },
+  "timeYesterday": "أمس",
+  "timeDaysAgo": "منذ {days} أيام",
+  "@timeDaysAgo": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+
+  "errorLoadFailed": "تعذّر التحميل",
+  "errorRetry": "إعادة المحاولة",
+  "errorNoInternet": "لا يوجد اتصال بالإنترنت",
+
+  "onboardingWelcomeTitle": "أهلاً بك في إتقان",
+  "onboardingWelcomeSubtitle": "أتقِن تلاوة القرآن الكريم",
+  "onboardingLevelTitle": "ما مستواك؟",
+  "onboardingLevelBeginner": "مبتدئ — أتعلم القراءة",
+  "onboardingLevelIntermediate": "متوسط — أريد تحسين التجويد",
+  "onboardingLevelAdvanced": "متقدم — أريد إتقان التلاوة",
+  "onboardingGoalTitle": "كم دقيقة يومياً؟",
+  "onboardingStartBtn": "ابدأ بالفاتحة",
+  "onboardingContinue": "متابعة",
+
+  "wordDetailClose": "إغلاق",
+  "wordDetailYouSaid": "ما قلته",
+  "wordDetailCorrect": "الصحيح",
+  "wordDetailTajweedRule": "قاعدة التجويد",
+  "wordDetailPracticeAyah": "تدرّب على هذه الآية"
+}

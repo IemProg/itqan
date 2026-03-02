@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../core/theme/colors.dart';
@@ -117,10 +119,10 @@ class _WelcomePage extends StatelessWidget {
         ),
         const Text('Itqan', style: TextStyle(fontFamily: 'Inter', fontSize: 24, color: ItqanColors.mist)),
         const SizedBox(height: ItqanSpacing.sm),
-        const Text(
-          'Perfect your Quran recitation',
-          style: TextStyle(fontSize: 16, color: ItqanColors.silver),
-        ),
+        Builder(builder: (ctx) => Text(
+          AppLocalizations.of(ctx)!.onboardingWelcomeSubtitle,
+          style: const TextStyle(fontSize: 16, color: ItqanColors.silver),
+        )),
         const SizedBox(height: ItqanSpacing.xxl),
         GestureDetector(
           onTap: onNext,
@@ -147,10 +149,11 @@ class _LevelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final levels = [
-      {'key': 'beginner', 'emoji': '🌱', 'title': 'Beginner', 'sub': "I'm learning to read Arabic"},
-      {'key': 'intermediate', 'emoji': '📖', 'title': 'Intermediate', 'sub': 'I can read, want better tajweed'},
-      {'key': 'advanced', 'emoji': '🎓', 'title': 'Advanced', 'sub': 'I want to perfect my recitation'},
+      {'key': 'beginner', 'emoji': '🌱', 'title': l10n.settingsLevelBeginner, 'sub': l10n.onboardingLevelBeginner},
+      {'key': 'intermediate', 'emoji': '📖', 'title': l10n.settingsLevelIntermediate, 'sub': l10n.onboardingLevelIntermediate},
+      {'key': 'advanced', 'emoji': '🎓', 'title': l10n.settingsLevelAdvanced, 'sub': l10n.onboardingLevelAdvanced},
     ];
 
     return Padding(
@@ -159,7 +162,7 @@ class _LevelPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text("What's your experience level?", style: ItqanTypography.heading2, textAlign: TextAlign.center),
+          Builder(builder: (ctx) => Text(AppLocalizations.of(ctx)!.onboardingLevelTitle, style: ItqanTypography.heading2, textAlign: TextAlign.center)),
           const SizedBox(height: ItqanSpacing.xl),
           ...levels.map((l) {
             final active = selected == l['key'];
@@ -192,7 +195,7 @@ class _LevelPage extends StatelessWidget {
             );
           }),
           const SizedBox(height: ItqanSpacing.xl),
-          _GoldButton(label: 'Continue', onPressed: onNext),
+          Builder(builder: (ctx) => _GoldButton(label: AppLocalizations.of(ctx)!.onboardingContinue, onPressed: onNext)),
         ],
       ),
     );
@@ -213,7 +216,7 @@ class _GoalPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('How much time can you practice daily?', style: ItqanTypography.heading2, textAlign: TextAlign.center),
+          Builder(builder: (ctx) => Text(AppLocalizations.of(ctx)!.onboardingGoalTitle, style: ItqanTypography.heading2, textAlign: TextAlign.center)),
           const SizedBox(height: ItqanSpacing.xl),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -239,7 +242,7 @@ class _GoalPage extends StatelessWidget {
             }).toList(),
           ),
           const SizedBox(height: ItqanSpacing.xxl),
-          _GoldButton(label: 'Start with Al-Fatiha', onPressed: onFinish),
+          Builder(builder: (ctx) => _GoldButton(label: AppLocalizations.of(ctx)!.onboardingStartBtn, onPressed: onFinish)),
         ],
       ),
     );

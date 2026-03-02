@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../../core/extensions/context_extensions.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/theme/spacing.dart';
 import '../../../core/theme/typography.dart';
@@ -71,7 +73,7 @@ class WordDetailSheet extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Letters', style: ItqanTypography.label),
+                  Text(AppLocalizations.of(context)!.wordDetailYouSaid, style: ItqanTypography.label),
                   const SizedBox(height: ItqanSpacing.sm),
                   Wrap(
                     textDirection: TextDirection.rtl,
@@ -108,7 +110,7 @@ class WordDetailSheet extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(tajweedRuleName(tajweedRule!), style: ItqanTypography.label.copyWith(color: tajweedColor(tajweedRule!))),
+                    Text('\${AppLocalizations.of(context)!.wordDetailTajweedRule}: \${tajweedRuleName(tajweedRule!)}', style: ItqanTypography.label.copyWith(color: tajweedColor(tajweedRule!))),
                     const SizedBox(height: 4),
                     Text(tajweedExplanation(tajweedRule!), style: ItqanTypography.caption),
                   ],
@@ -126,7 +128,7 @@ class WordDetailSheet extends StatelessWidget {
                   side: const BorderSide(color: ItqanColors.charcoal),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: const Text('Close', style: TextStyle(color: ItqanColors.mist)),
+                child: Text(AppLocalizations.of(context)!.wordDetailClose, style: const TextStyle(color: ItqanColors.mist)),
               ),
             ),
           ],

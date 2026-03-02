@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:itqan/l10n/app_localizations.dart';
+import '../../core/extensions/context_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/typography.dart';
@@ -154,9 +156,9 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
         setState(() => _isBookmarked = false);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Bookmark removed'),
-              duration: Duration(seconds: 2),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.mushafBookmarkRemoved),
+              duration: const Duration(seconds: 2),
               backgroundColor: ItqanColors.charcoal,
             ),
           );
@@ -176,9 +178,9 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text(
-                'Bookmark saved ✓',
-                style: TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w600),
+              content: Text(
+                AppLocalizations.of(context)!.mushafBookmarkSaved,
+                style: const TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w600),
               ),
               duration: const Duration(seconds: 2),
               backgroundColor: ItqanColors.gold,
@@ -196,7 +198,7 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
       builder: (_) => StatefulBuilder(
         builder: (ctx, setS) => AlertDialog(
           backgroundColor: ItqanColors.onyx,
-          title: const Text('Jump to Page', style: ItqanTypography.label),
+          title: Text(AppLocalizations.of(context)!.mushafJumpToPage, style: ItqanTypography.label),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -207,16 +209,16 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                 divisions: 603,
                 activeColor: ItqanColors.gold,
                 inactiveColor: ItqanColors.charcoal,
-                label: 'Page $temp',
+                label: AppLocalizations.of(context)!.mushafPage(temp),
                 onChanged: (v) => setS(() => temp = v.round()),
               ),
-              Text('Page $temp / 604', style: ItqanTypography.caption),
+              Text('\${AppLocalizations.of(context)!.mushafPage(temp)} / 604', style: ItqanTypography.caption),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancel', style: TextStyle(color: ItqanColors.mist)),
+              child: Text(AppLocalizations.of(context)!.mushafJumpCancel, style: const TextStyle(color: ItqanColors.mist)),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: ItqanColors.gold),
@@ -224,7 +226,7 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                 Navigator.pop(ctx);
                 _jumpToPage(temp);
               },
-              child: const Text('Go', style: TextStyle(color: ItqanColors.void_)),
+              child: Text(AppLocalizations.of(context)!.mushafJumpConfirm, style: const TextStyle(color: ItqanColors.void_)),
             ),
           ],
         ),
@@ -280,7 +282,7 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                     padding: EdgeInsets.zero,
                   ),
                   juzNum > 0
-                      ? Text('Juz $juzNum',
+                      ? Text(AppLocalizations.of(context)!.mushafJuz(juzNum),
                           style: const TextStyle(color: ItqanColors.mist, fontSize: 11))
                       : const SizedBox.shrink(),
                   Text(
@@ -300,7 +302,7 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                           size: 18,
                         ),
                         onPressed: _toggleBookmark,
-                        tooltip: _isBookmarked ? 'Remove bookmark' : 'Add bookmark',
+                        tooltip: _isBookmarked ? AppLocalizations.of(context)!.mushafBookmarkRemoved : AppLocalizations.of(context)!.mushafBookmarkSaved,
                         visualDensity: VisualDensity.compact,
                         padding: EdgeInsets.zero,
                       ),
@@ -313,7 +315,7 @@ class _MushafPageScreenState extends ConsumerState<MushafPageScreen> {
                           size: 18,
                         ),
                         onPressed: () => setState(() => _showTranslation = !_showTranslation),
-                        tooltip: 'Translation',
+                        tooltip: AppLocalizations.of(context)!.mushafTranslationToggle,
                         visualDensity: VisualDensity.compact,
                         padding: EdgeInsets.zero,
                       ),
@@ -439,7 +441,7 @@ class _MushafPage extends ConsumerWidget {
           children: [
             const Icon(Icons.wifi_off_rounded, color: ItqanColors.mist, size: 40),
             const SizedBox(height: 12),
-            Text('Could not load page $pageNumber', style: ItqanTypography.caption, textAlign: TextAlign.center),
+            Text(AppLocalizations.of(context)!.errorLoadFailed, style: ItqanTypography.caption, textAlign: TextAlign.center),
           ],
         ),
       ),
@@ -736,8 +738,8 @@ class _WordDetailSheet extends ConsumerWidget {
                 );
               },
               icon: const Icon(Icons.mic_rounded, color: ItqanColors.void_, size: 18),
-              label: const Text('Practice this Ayah',
-                  style: TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700)),
+              label: Text(AppLocalizations.of(context)!.wordDetailPracticeAyah,
+                  style: const TextStyle(color: ItqanColors.void_, fontWeight: FontWeight.w700)),
             ),
           ),
           const SizedBox(height: 8),
