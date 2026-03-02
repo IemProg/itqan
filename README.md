@@ -13,6 +13,7 @@
 [![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android-lightgrey)](https://flutter.dev)
 [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-green)](https://github.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Website](https://img.shields.io/badge/Website-Landing%20Page-C9982E)](https://IemProg.github.io/itqan/)
 
 </div>
 
