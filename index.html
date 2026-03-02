@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Itqan — AI Quran Recitation & Tajweed</title>
+<meta name="description" content="Free, open-source AI-powered Quran recitation and tajweed feedback app. 100% on-device, private, and always free.">
+<meta name="theme-color" content="#0A0A0F">
+<meta property="og:title" content="Itqan — AI Quran Recitation & Tajweed">
+<meta property="og:description" content="Free, open-source AI-powered Quran recitation and tajweed feedback app.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0A0A0F;
+  --bg-card: #12121A;
+  --bg-card-hover: #1A1A25;
+  --border-subtle: #1E1E2A;
+  --gold: #C9982E;
+  --gold-light: #E8C066;
+  --gold-glow: rgba(201, 152, 46, 0.15);
+  --green: #4ADE80;
+  --snow: #EEEEF5;
+  --mist: #9898A6;
+  --font-ar: 'Amiri', serif;
+  --font-en: 'Inter', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--snow);
+  font-family: var(--font-en);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ar { font-family: var(--font-ar); }
+
+a { color: var(--gold-light); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold); }
+
+/* ===== Utility ===== */
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: 96px 0;
+  position: relative;
+}
+
+.section-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201, 152, 46, 0.3);
+  border-radius: 100px;
+  padding: 6px 16px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--font-ar);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: var(--snow);
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  font-size: 17px;
+  color: var(--mist);
+  max-width: 560px;
+  margin: 0 auto 48px;
+}
+
+.divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 2px;
+  margin: 0 auto 48px;
+}
+
+/* ===== Nav ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 0;
+  transition: background 0.3s, backdrop-filter 0.3s;
+}
+
+.nav.scrolled {
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.nav-logo {
+  font-family: var(--font-ar);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--mist);
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--snow); }
+
+.nav-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--snow) !important;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.nav-github:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--gold);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--snow);
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(201, 152, 46, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-geo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.hero-bismillah {
+  font-family: var(--font-ar);
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--mist);
+  margin-bottom: 32px;
+}
+
+.hero-title {
+  font-family: var(--font-ar);
+  font-size: clamp(48px, 9vw, 80px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-title-en {
+  font-family: var(--font-en);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 300;
+  color: var(--mist);
+  letter-spacing: 0.12em;
+  margin-bottom: 32px;
+  direction: ltr;
+}
+
+.hero-desc {
+  font-family: var(--font-ar);
+  font-size: clamp(18px, 2.5vw, 22px);
+  color: var(--snow);
+  max-width: 640px;
+  margin: 0 auto 12px;
+  line-height: 1.8;
+}
+
+.hero-desc-en {
+  font-size: 16px;
+  color: var(--mist);
+  max-width: 540px;
+  margin: 0 auto 40px;
+  direction: ltr;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px 32px;
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(201, 152, 46, 0.3);
+  direction: ltr;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(201, 152, 46, 0.4);
+  color: var(--bg-primary);
+}
+
+.hero-badges {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  direction: ltr;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--mist);
+}
+
+.hero-badge svg { flex-shrink: 0; }
+
+/* ===== Screenshots ===== */
+.screenshots {
+  text-align: center;
+  background: linear-gradient(180deg, var(--bg-primary) 0%, #08080D 100%);
+}
+
+.carousel-wrapper {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 24px 32px;
+  scrollbar-width: none;
+  justify-content: center;
+}
+
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.phone-frame {
+  flex-shrink: 0;
+  width: 240px;
+  scroll-snap-align: center;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.phone-frame:hover { transform: translateY(-8px); }
+
+.phone-frame img {
+  width: 100%;
+  border-radius: 24px;
+  border: 2px solid var(--border-subtle);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.phone-label {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--mist);
+  font-weight: 500;
+}
+
+/* ===== Features ===== */
+.features { text-align: center; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  direction: rtl;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: right;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.feature-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--gold-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.feature-card h3 {
+  font-family: var(--font-ar);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--snow);
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  font-size: 14px;
+  color: var(--mist);
+  line-height: 1.6;
+}
+
+/* ===== How It Works ===== */
+.how-it-works { text-align: center; }
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 640px;
+  margin: 0 auto;
+  direction: rtl;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  text-align: right;
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.step:last-child { padding-bottom: 0; }
+
+.step-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.step-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--bg-primary);
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.step-connector {
+  width: 2px;
+  flex: 1;
+  background: linear-gradient(180deg, var(--gold), transparent);
+  min-height: 40px;
+}
+
+.step:last-child .step-connector { display: none; }
+
+.step-content { padding-top: 6px; }
+
+.step-content h3 {
+  font-family: var(--font-ar);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--snow);
+  margin-bottom: 4px;
+}
+
+.step-content p {
+  font-size: 14px;
+  color: var(--mist);
+}
+
+/* ===== Tech Stack ===== */
+.tech-stack { text-align: center; }
+
+.tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  direction: ltr;
+}
+
+.tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--snow);
+  transition: border-color 0.3s, transform 0.2s;
+}
+
+.tech-pill:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.tech-pill svg { flex-shrink: 0; }
+
+/* ===== Open Source CTA ===== */
+.oss-cta {
+  text-align: center;
+  background: linear-gradient(180deg, var(--bg-primary) 0%, #0D0D14 50%, var(--bg-primary) 100%);
+}
+
+.oss-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 56px 40px;
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.oss-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.oss-card h2 {
+  font-family: var(--font-ar);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 700;
+  color: var(--snow);
+  margin-bottom: 16px;
+}
+
+.oss-card p {
+  font-size: 16px;
+  color: var(--mist);
+  margin-bottom: 32px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.oss-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  direction: ltr;
+}
+
+.btn-star {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-star:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(201, 152, 46, 0.3);
+  color: var(--bg-primary);
+}
+
+.btn-contribute {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--snow);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.btn-contribute:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  color: var(--snow);
+}
+
+.sadaqah-quote {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.sadaqah-quote blockquote {
+  font-family: var(--font-ar);
+  font-size: 18px;
+  color: var(--gold-light);
+  font-style: italic;
+  line-height: 1.8;
+}
+
+.sadaqah-quote cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--mist);
+  font-style: normal;
+}
+
+/* ===== Footer ===== */
+.footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-left {
+  font-size: 14px;
+  color: var(--mist);
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  direction: ltr;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--mist);
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--snow); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .section { padding: 64px 0; }
+
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-toggle { display: block; }
+
+  .carousel-track {
+    justify-content: flex-start;
+    padding: 20px 40px 32px;
+  }
+
+  .phone-frame { width: 200px; }
+
+  .features-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .feature-card { padding: 20px 16px; }
+
+  .oss-card { padding: 40px 24px; }
+
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .phone-frame { width: 180px; }
+  .hero { padding: 100px 16px 60px; }
+}
+
+/* ===== Animations ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Nav ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">إتقان</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features">المميزات</a></li>
+      <li><a href="#how-it-works">كيف يعمل</a></li>
+      <li><a href="#tech">التقنيات</a></li>
+      <li>
+        <a href="https://github.com/IemProg/itqan" class="nav-github" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="hero">
+  <!-- Islamic geometric pattern background -->
+  <svg class="hero-geo" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="currentColor" stroke-width="1" fill="none" opacity="0.6" color="#C9982E">
+      <polygon points="300,50 462,125 537,287 462,450 300,525 138,450 63,287 138,125"/>
+      <polygon points="300,100 430,160 490,287 430,415 300,475 170,415 110,287 170,160"/>
+      <line x1="300" y1="50" x2="300" y2="525"/>
+      <line x1="63" y1="287" x2="537" y2="287"/>
+      <line x1="138" y1="125" x2="462" y2="450"/>
+      <line x1="462" y1="125" x2="138" y2="450"/>
+      <circle cx="300" cy="287" r="140"/>
+      <circle cx="300" cy="287" r="80"/>
+      <polygon points="300,160 340,250 430,250 355,310 380,400 300,350 220,400 245,310 170,250 260,250"/>
+    </g>
+  </svg>
+
+  <div class="container" style="position:relative; z-index:1;">
+    <p class="hero-bismillah fade-in">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+    <h1 class="hero-title fade-in">إتقان</h1>
+    <p class="hero-title-en fade-in">I T Q A N</p>
+    <p class="hero-desc fade-in">تعلّم تلاوة القرآن الكريم وتجويده بالذكاء الاصطناعي</p>
+    <p class="hero-desc-en fade-in">AI-powered Quran recitation &amp; tajweed feedback &mdash; 100% on-device, private, and free</p>
+    <a href="https://github.com/IemProg/itqan" class="hero-cta fade-in" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      View on GitHub
+    </a>
+    <div class="hero-badges fade-in">
+      <span class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        100% Private
+      </span>
+      <span class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Open Source
+      </span>
+      <span class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        On-Device AI
+      </span>
+      <span class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Always Free
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Screenshots ===== -->
+<section class="screenshots section" id="screenshots">
+  <div class="container">
+    <span class="section-label fade-in">Screenshots</span>
+    <h2 class="section-title fade-in">لقطات من التطبيق</h2>
+    <p class="section-subtitle fade-in">واجهة أنيقة بالعربية مع دعم كامل للتجويد والتقييم</p>
+  </div>
+  <div class="carousel-wrapper">
+    <div class="carousel-track">
+      <div class="phone-frame fade-in">
+        <img src="screenshots/home.png" alt="Itqan Home Screen" loading="lazy">
+        <div class="phone-label ar">الرئيسية</div>
+      </div>
+      <div class="phone-frame fade-in">
+        <img src="screenshots/recitation.png" alt="Recitation Screen" loading="lazy">
+        <div class="phone-label ar">التلاوة</div>
+      </div>
+      <div class="phone-frame fade-in">
+        <img src="screenshots/results.png" alt="Results Screen" loading="lazy">
+        <div class="phone-label ar">النتيجة</div>
+      </div>
+      <div class="phone-frame fade-in">
+        <img src="screenshots/mushaf.png" alt="Mushaf Viewer" loading="lazy">
+        <div class="phone-label ar">المصحف</div>
+      </div>
+      <div class="phone-frame fade-in">
+        <img src="screenshots/progress.png" alt="Progress Tracking" loading="lazy">
+        <div class="phone-label ar">التقدم</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Features ===== -->
+<section class="features section" id="features">
+  <div class="container">
+    <span class="section-label fade-in">Features</span>
+    <h2 class="section-title fade-in">المميزات الرئيسية</h2>
+    <p class="section-subtitle fade-in">تصحيح شامل على مستوى الحرف والتشكيل والتجويد</p>
+    <div class="divider"></div>
+    <div class="features-grid">
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <h3>تسجيل وتقييم</h3>
+        <p>سجّل تلاوتك واحصل على نتيجة شاملة من 100 مع تفاصيل لكل كلمة</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <h3>تصحيح الحروف</h3>
+        <p>يكتشف الخلط بين الحروف المتشابهة مثل ص/س، ح/ه، ض/ظ، ق/ك</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        </div>
+        <h3>محرك التجويد</h3>
+        <p>يكتشف الإدغام والإخفاء والإقلاب والمدود والقلقلة والغنة</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>المصحف الرقمي</h3>
+        <p>تصفح المصحف كاملًا بالخط العثماني مع تلوين أحكام التجويد</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
+        </div>
+        <h3>استمع للقراء</h3>
+        <p>استمع لأشهر القراء مثل العفاسي وعبد الباسط والحصري قبل التلاوة</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>تقرير مفصل</h3>
+        <p>شاهد دقة كل كلمة على حدة مع ملاحظات مخصصة لتحسين أدائك</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>خصوصية كاملة</h3>
+        <p>كل المعالجة تتم على جهازك — صوتك لا يغادر هاتفك أبدًا</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3>مجاني تمامًا</h3>
+        <p>لا إعلانات، لا اشتراكات، لا مشتريات داخلية — صدقة جارية</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== How It Works ===== -->
+<section class="how-it-works section" id="how-it-works">
+  <div class="container">
+    <span class="section-label fade-in">How It Works</span>
+    <h2 class="section-title fade-in">كيف يعمل إتقان؟</h2>
+    <p class="section-subtitle fade-in">خمس خطوات بسيطة للتعلم والتحسين</p>
+    <div class="divider"></div>
+    <div class="steps">
+      <div class="step fade-in">
+        <div class="step-line">
+          <div class="step-num">1</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-content">
+          <h3>اختر السورة والآية</h3>
+          <p>تصفح المصحف أو ابحث عن السورة التي تريد التدرب عليها</p>
+        </div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-line">
+          <div class="step-num">2</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-content">
+          <h3>استمع للقارئ المرجعي</h3>
+          <p>اختياري — استمع لتلاوة أحد القراء المشهورين قبل البدء</p>
+        </div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-line">
+          <div class="step-num">3</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-content">
+          <h3>سجّل تلاوتك</h3>
+          <p>اضغط زر التسجيل وابدأ بتلاوة الآية — الذكاء الاصطناعي يستمع</p>
+        </div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-line">
+          <div class="step-num">4</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-content">
+          <h3>احصل على نتيجتك</h3>
+          <p>نتيجة من 100 مع تفاصيل دقة الكلمات والحروف والتجويد والطلاقة</p>
+        </div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-line">
+          <div class="step-num">5</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-content">
+          <h3>راجع الأخطاء وتعلّم</h3>
+          <p>اضغط على أي كلمة لمعرفة نوع الخطأ وكيفية تصحيحه</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Tech Stack ===== -->
+<section class="tech-stack section" id="tech">
+  <div class="container">
+    <span class="section-label fade-in">Tech Stack</span>
+    <h2 class="section-title fade-in">التقنيات المستخدمة</h2>
+    <p class="section-subtitle fade-in" style="direction:ltr;">Built with modern, open-source technologies for maximum performance and privacy</p>
+    <div class="divider"></div>
+    <div class="tech-pills fade-in">
+      <div class="tech-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#54C5F8"><path d="M14.314 0L2.3 12 6 15.7 21.684 0h-7.37zm0 0L7.97 7.97 14.314 14.314 21.684 6.944 14.314 0zM7.97 7.97L2.3 12l5.67 4.03L14.314 9.686 7.97 7.97z" opacity=".5"/><path d="M14.314 14.314L7.97 16.03 14.314 24l7.37-7.37-7.37-2.316z"/></svg>
+        Flutter
+      </div>
+      <div class="tech-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--snow)"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--snow)" stroke-width="1.5"/><path d="M8 12l2-5 4 10 2-5" stroke="var(--snow)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Whisper AI
+      </div>
+      <div class="tech-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#7B5EA7" opacity="0.8"/><text x="12" y="16" font-size="10" fill="white" text-anchor="middle" font-weight="bold">O</text></svg>
+        ONNX Runtime
+      </div>
+      <div class="tech-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#54C5F8" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Riverpod
+      </div>
+      <div class="tech-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        Hive DB
+      </div>
+      <div class="tech-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--snow)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        On-Device ML
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Open Source CTA ===== -->
+<section class="oss-cta section" id="contribute">
+  <div class="container">
+    <div class="oss-card fade-in">
+      <h2>مشروع مفتوح المصدر</h2>
+      <p>إتقان مشروع مجتمعي — مساهمتك هي صدقة جارية تبقى ما دام القرآن يُتلى</p>
+      <div class="oss-buttons">
+        <a href="https://github.com/IemProg/itqan" class="btn-star" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Star on GitHub
+        </a>
+        <a href="https://github.com/IemProg/itqan/issues" class="btn-contribute" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Contribute
+        </a>
+      </div>
+      <div class="sadaqah-quote">
+        <blockquote>
+          «إن الله يحب إذا عمل أحدكم عملًا أن يُتقنه»
+        </blockquote>
+        <cite>حديث شريف</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="ar" style="color: var(--gold-light);">إتقان</span>
+        &nbsp;&middot;&nbsp;
+        MIT License &middot; صدقة جارية
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/IemProg/itqan" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/IemProg/itqan/issues" target="_blank" rel="noopener">Issues</a></li>
+        <li><a href="https://github.com/IemProg/itqan/blob/main/LICENSE" target="_blank" rel="noopener">License</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Mobile nav toggle
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+
+// Close mobile nav on link click
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// Intersection Observer for fade-in animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
