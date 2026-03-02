@@ -1,0 +1,20 @@
+# ML models (too large for GitHub)
+ml/models/
+
+# Flutter
+*.iml
+.idea/
+build/
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+pubspec.lock
+
+# macOS
+.DS_Store
+*.swp
+
+# IDE
+.vscode/
+*.code-workspace
